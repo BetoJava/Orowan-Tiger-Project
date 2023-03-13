@@ -13,17 +13,17 @@ public class LoginView extends View {
 
     private Controller controller;
 
-    private Label titleLabel = new Label("FRIST Project");
+    private Label titleLabel = new Label("OROWAN");
 
     private HBox identifierBox = new HBox();
-    private Label identifierLabel = new Label("Identifiant : ");
+    private Label identifierLabel = new Label("User ID : ");
     private TextField identifierTextField = new TextField();
 
     private HBox passwordBox = new HBox();
-    private Label passwordLabel = new Label("Mot de passe : ");
+    private Label passwordLabel = new Label("Password : ");
     private PasswordField passwordTextField = new PasswordField();
 
-    private Button connectionButton = new Button("Connection");
+    private Button connectionButton = new Button("LOGIN");
 
     /**
      * Constructeur de la main view
