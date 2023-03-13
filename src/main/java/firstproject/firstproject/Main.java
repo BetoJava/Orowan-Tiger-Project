@@ -1,9 +1,9 @@
 package firstproject.firstproject;
 
 import firstproject.firstproject.controller.Controller;
-import firstproject.firstproject.view.MainView;
+import firstproject.firstproject.view.LoginView;
+import firstproject.firstproject.view.MenuView;
 import javafx.application.Application;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -33,7 +33,7 @@ public class Main extends Application {
 
         // Set up GUI //
         VBox root = new VBox();
-        MainView mainView = new MainView(root, stage, controller);
+        LoginView mainView = new LoginView(root, stage, controller);
         stage.setTitle("FIRST Project");
         //stage.getIcons().add(new Image("./icon.png"));
         Controller.setView(mainView);

@@ -1,6 +1,7 @@
 package firstproject.firstproject.view;
 
 import firstproject.firstproject.controller.Controller;
+import firstproject.firstproject.model.Orowan;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;

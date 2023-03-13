@@ -9,7 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class MainView extends View {
+public class LoginView extends View {
 
     private Controller controller;
 
@@ -32,7 +32,7 @@ public class MainView extends View {
      * @param primaryStage PrimaryStage
      * @param controller   Controleur associé à la view
      */
-    public MainView(VBox root, Stage primaryStage, Controller controller) {
+    public LoginView(VBox root, Stage primaryStage, Controller controller) {
         super(root, primaryStage, controller);
         this.controller = controller;
         createButton();
