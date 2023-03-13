@@ -2,6 +2,7 @@ module firstproject.firstproject {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.desktop;
+    requires java.sql;
 
 
     opens firstproject.firstproject to javafx.fxml;
