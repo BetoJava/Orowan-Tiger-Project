@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class OrowanOutputData {
 
+    private int matId;
     private int caseId;
     private String errors;
     private double offsetYield;
@@ -24,8 +25,9 @@ public class OrowanOutputData {
 
     }
 
-    public OrowanOutputData(int caseId, String errors, double offsetYield, double friction, double rollingTorque, double sigmaMoy,
+    public OrowanOutputData(int matId, int caseId, String errors, double offsetYield, double friction, double rollingTorque, double sigmaMoy,
                             double sigmaIni, double sigmaOut, double sigmaMax, double forceError, double slipError, boolean hasConverged) {
+        this.matId = matId;
         this.caseId = caseId;
         this.errors = errors;
         this.offsetYield = offsetYield;
@@ -134,5 +136,13 @@ public class OrowanOutputData {
 
     public void setHasConverged(boolean hasConverged) {
         this.hasConverged = hasConverged;
+    }
+
+    public int getMatID() {
+        return matId;
+    }
+
+    public void setMatID(int matID) {
+        this.matId = matID;
     }
 }
