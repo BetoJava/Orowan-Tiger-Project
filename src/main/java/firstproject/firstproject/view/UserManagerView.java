@@ -12,7 +12,6 @@ public class UserManagerView extends View {
      *
      * @param root         Noeud racine sur lequel se fait l'affichage
      * @param primaryStage PrimaryStage
-     * @param controller   Controleur associé à la view
      */
     public UserManagerView(VBox root, Stage primaryStage, Controller controller) {
         super(root, primaryStage, controller);

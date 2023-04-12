@@ -1,10 +1,12 @@
 package firstproject.firstproject.view;
 
+import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
-import firstproject.firstproject.controller.Controller;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
+import firstproject.firstproject.model.Stand;
+import firstproject.firstproject.model.User;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,14 +15,6 @@ import javafx.stage.Stage;
 
 
 public class SettingsView extends View{
-    /**
-     * Constructeur des différentes View
-     *
-     * @param root         Noeud racine sur lequel se fait l'affichage
-     * @param primaryStage PrimaryStage
-     * @param controller   Controleur associé à la view
-     */
-
 
     private ImageView settingsImage;
     private Label titleLabel = new Label("Application Settings");
@@ -35,10 +29,16 @@ public class SettingsView extends View{
     ComboBox<String> comboBox = new ComboBox<>();
 
 
-
-    public SettingsView(VBox root, Stage primaryStage, Controller controller) {
-        super(root, primaryStage, controller);
-        setImage();
+    /**
+     * Constructeur des différentes View
+     *
+     * @param root         Noeud racine sur lequel se fait l'affichage
+     * @param primaryStage PrimaryStage
+     */
+    public SettingsView(VBox root, Stage primaryStage) {
+        super(root, primaryStage);
+        customComponents(root);
+        createButton();
         createScene(root);
 
     }
@@ -51,41 +51,57 @@ public class SettingsView extends View{
     private void createScene(VBox root) {
         customComponents(root);
         // ComboBox
-        comboBox.getItems().addAll("Stand 1", "Stand 2", "Stand 3");
-        String choixSelectionne = comboBox.getValue();
 
-        //Toggle Button
+        for(Stand s : Main.getCurrentUser().getStandList()) {
+            comboBox.getItems().add(s.getStandID());
+        }
 
-        toggleButton.getStyleClass().add("toggle-button");
-
-        toggleButton.setSelected(true); // pour le mettre dans l'état "activé"
-
-        toggleButton.setOnAction(e -> {
-            if (toggleButton.isSelected()) {
-                // Le switch est activé
+        // Action Toggle button
+        ToggleButton toggleButton = new ToggleButton("Disable");
+        toggleButton.setOnAction(event -> {
+            if(toggleButton.isSelected()) {
                 toggleButton.setText("Enable");
-                System.out.println("Switch activé");
+                toggleButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+                getStandFromID(comboBox.getValue()).setEnable(true);
             } else {
-                // Le switch est désactivé
                 toggleButton.setText("Disable");
-                System.out.println("Switch désactivé");
+                toggleButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+                getStandFromID(comboBox.getValue()).setEnable(false);
             }
         });
 
-        // Add Regions to root children //
-        root.getChildren().addAll(titleBox,standBox,toggleButton,switchButton);
+        // Action comboBox
+        comboBox.setOnAction(event -> {
+            Stand selectedStand = getStandFromID(comboBox.getValue());
+            toggleButton.setSelected(selectedStand.isEnable());
+            toggleButton.setText(selectedStand.isEnable() ? "Enable" : "Disable");
+        });
 
-        // Add Components to Regions children //
-        titleBox.getChildren().add(titleLabel);
-        standBox.getChildren().addAll(standLabel,comboBox);
+
+
+        standBox.getChildren().addAll(standLabel, comboBox, toggleButton);
+        root.getChildren().addAll(titleLabel, standBox, menuButton);
 
 
     }
     private void customComponents(VBox root) {
+        titleLabel.setGraphic(Assets.imageMap75.get("settings"));
+        menuButton.setGraphic(Assets.imageMap75.get("home"));
+        menuButton.setContentDisplay(ContentDisplay.LEFT);
         root.setStyle("-fx-alignment: center");
         titleBox.setStyle("-fx-alignment: center");
         standBox.setStyle("-fx-alignment: center");
+        titleLabel.setStyle("-fx-font-size: 60px;" +
+                "-fx-font-family: Times New Roman;");
 
+    }
 
+    private Stand getStandFromID(String standID) {
+        for(Stand s : Main.getCurrentUser().getStandList()) {
+            if(s.getStandID() == standID) {
+                return s;
+            }
+        }
+        return null;
     }
 }

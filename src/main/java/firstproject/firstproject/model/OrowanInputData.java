@@ -2,6 +2,8 @@ package firstproject.firstproject.model;
 
 public class OrowanInputData {
 
+    private double rollSpeed;
+
     private int cas;
     private double He;
     private double Hs;
@@ -106,5 +108,13 @@ public class OrowanInputData {
 
     public void setG(double g) {
         G = g;
+    }
+
+    public double getRollSpeed() {
+        return rollSpeed;
+    }
+
+    public void setRollSpeed(double rollSpeed) {
+        this.rollSpeed = rollSpeed;
     }
 }

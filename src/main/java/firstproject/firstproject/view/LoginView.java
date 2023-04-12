@@ -1,6 +1,5 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.controller.Controller;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -10,8 +9,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class LoginView extends View {
-
-    private Controller controller;
 
     private Label titleLabel = new Label("OROWAN");
 
@@ -30,29 +27,17 @@ public class LoginView extends View {
      *
      * @param root         Noeud racine sur lequel se fait l'affichage
      * @param primaryStage PrimaryStage
-     * @param controller   Controleur associé à la view
      */
-    public LoginView(VBox root, Stage primaryStage, Controller controller) {
-        super(root, primaryStage, controller);
-        this.controller = controller;
+    public LoginView(VBox root, Stage primaryStage) {
+        super(root, primaryStage);
+        customComponents(root);
         createButton();
         createScene(root);
 
     }
 
     private void createButton() {
-        VBox root = new VBox();
-        connectionButton.setOnAction(e -> stage.setScene(new MenuView(root, stage, controller)));
-        // La même chose peut être faite de cette manière :
-        /*
-        connectionButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                stage.setScene(new GraphView(root, stage, controller));
-            }
-        });
-         */
-
+        connectionButton.setOnAction(e -> stage.setScene(new MenuView(new VBox(), stage)));
     }
 
     private void createScene(VBox root) {
@@ -75,6 +60,8 @@ public class LoginView extends View {
         root.setStyle("-fx-alignment: center");
         identifierBox.setStyle("-fx-alignment: center");
         passwordBox.setStyle("-fx-alignment: center");
+        titleLabel.setStyle("-fx-font-size: 60px;" +
+                "-fx-font-family: Times New Roman;");
     }
 
 

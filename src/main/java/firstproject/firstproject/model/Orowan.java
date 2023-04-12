@@ -27,7 +27,12 @@ public class Orowan {
             ArrayList<OrowanInputData> inputDataList = convertRawDataToInputData(fileName + "/Krakov/", stripID, stand);
             saveInputDataToTxt(inputDataList, fileName + "/Model/", stripID, stand);
             lastComputeTime = executeOrowan(fileName + "/Model/", stripID, stand);
-            return loadOutputDataFromFile(fileName + "/Model/", stripID, stand);
+            ArrayList<OrowanOutputData> outputDataList = loadOutputDataFromFile(fileName + "/Model/", stripID, stand);
+            // Adding Roll speed information to OrowanOutputData
+            for(int i = 0; i < inputDataList.size(); i++) {
+                outputDataList.get(i).setRollSpeed(inputDataList.get(i).getRollSpeed());
+            }
+            return outputDataList;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -35,6 +40,39 @@ public class Orowan {
         return null;
     }
 
+    /**
+     * From Orowan Output Data, return Processed output data.
+     * @param orowanOutputData Les sortie d'Orowan.exe sous forme d'une ArrayList d'objets OrowanOutputData.
+     * @param stripID Identifiant de la bande étudiée.
+     * @param stand Nom du stand étudié.
+     * @return Processed Orowan output data.
+     */
+    public static ArrayList<ProcessedOutputData> getProcessedOutputData(ArrayList<OrowanOutputData> orowanOutputData, String stripID, String stand) {
+        ArrayList<ProcessedOutputData> processedOutputData = new ArrayList<>();
+        int k = 0;
+        double avgFriction = 0;
+        double avgRollingSpeed = 0;
+        double avgSigma = 0;
+        for(int i = 0; i < orowanOutputData.size(); i++) {
+            k++;
+            avgFriction += orowanOutputData.get(i).getFriction();
+            avgRollingSpeed += orowanOutputData.get(i).getRollSpeed();
+            avgSigma += orowanOutputData.get(i).getSigmaMoy();
+            if(k >= 5) {
+                avgFriction /= 5d;
+                avgRollingSpeed /= 5d;
+                avgSigma /= 5d;
+
+                processedOutputData.add(new ProcessedOutputData(avgRollingSpeed, avgSigma, avgFriction, stand, stripID));
+                k = 0;
+                avgFriction = 0;
+                avgRollingSpeed = 0;
+                avgSigma = 0;
+            }
+        }
+
+        return processedOutputData;
+    }
 
 
     /**
@@ -59,6 +97,7 @@ public class Orowan {
             orowanInputData.setMu_ini(rawData.get(i).getMu());
             orowanInputData.setForce(rawData.get(i).getRollForce());
             orowanInputData.setG(rawData.get(i).getFSlip());
+            orowanInputData.setRollSpeed(rawData.get(i).getWorkRollSpeed());
             inputData.add(orowanInputData);
         }
         return inputData;

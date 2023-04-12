@@ -1,13 +1,19 @@
 package firstproject.firstproject.model;
 
+import javafx.beans.property.SimpleStringProperty;
+
+import java.util.ArrayList;
+
 public class User {
 
-    public static String WORKER = "worker";
-    public static String ENGINEER = "engineer";
+    public static String WORKER = "Worker";
+    public static String ENGINEER = "Engineer";
 
     private String identifier;
     private String password;
     private String role;
+
+    private ArrayList<Stand> standList = new ArrayList<>();
 
     public User(String identifier, String password, String role) {
         this.identifier = identifier;
@@ -41,5 +47,9 @@ public class User {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public ArrayList<Stand> getStandList() {
+        return standList;
     }
 }

@@ -3,10 +3,12 @@ module firstproject.firstproject {
     requires javafx.fxml;
     requires java.desktop;
     requires java.sql;
+    requires javafx.graphics;
 
 
-    opens firstproject.firstproject to javafx.fxml;
     exports firstproject.firstproject;
+    exports firstproject.firstproject.assets;
     exports firstproject.firstproject.view;
-    opens firstproject.firstproject.view to javafx.fxml;
+    opens firstproject.firstproject.model to javafx.base;
+    opens firstproject.firstproject.assets to javafx.graphics;
 }

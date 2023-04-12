@@ -1,12 +1,10 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.controller.Controller;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public abstract class View extends Scene {
-
 
     protected Stage stage;
 
@@ -14,14 +12,10 @@ public abstract class View extends Scene {
      * Constructeur des différentes View
      * @param root Noeud racine sur lequel se fait l'affichage
      * @param primaryStage PrimaryStage
-     * @param controller Controleur associé à la view
      */
-    public View(VBox root, Stage primaryStage, Controller controller) {
+    public View(VBox root, Stage primaryStage) {
         super(root, 1200, 700);
         this.stage = primaryStage;
-
-        //createContent(controller);
-
 
     }
 }

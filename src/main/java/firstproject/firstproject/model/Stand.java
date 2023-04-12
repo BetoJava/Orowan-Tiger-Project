@@ -18,4 +18,12 @@ public class Stand {
     public String getStandID() {
         return standID;
     }
+
+    public boolean isEnable() {
+        return isEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        isEnable = enable;
+    }
 }

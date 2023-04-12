@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 public class OrowanOutputData {
 
+    private double rollSpeed;
+
     private int matId;
     private int caseId;
     private String errors;
@@ -144,5 +146,13 @@ public class OrowanOutputData {
 
     public void setMatID(int matID) {
         this.matId = matID;
+    }
+
+    public double getRollSpeed() {
+        return rollSpeed;
+    }
+
+    public void setRollSpeed(double rollSpeed) {
+        this.rollSpeed = rollSpeed;
     }
 }

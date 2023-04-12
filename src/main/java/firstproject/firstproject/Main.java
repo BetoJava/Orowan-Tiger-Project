@@ -1,7 +1,8 @@
 package firstproject.firstproject;
 
 import firstproject.firstproject.assets.Assets;
-import firstproject.firstproject.controller.Controller;
+import firstproject.firstproject.model.Stand;
+import firstproject.firstproject.model.User;
 import firstproject.firstproject.view.LoginView;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
@@ -10,6 +11,8 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     private static Stage stage;
+
+    private static User currentUser;
 
     /**
      * Méthode de lancement du programme
@@ -29,19 +32,27 @@ public class Main extends Application {
     public void start(Stage stage) {
         this.stage = stage;
         Assets.loadAssets(); // Load image assets
-        Controller controller = new Controller();
-
+        setCurrentUser(new User("red","ihi"));
+        getCurrentUser().getStandList().add(new Stand("F2"));
         // Set up GUI //
         VBox root = new VBox();
-        LoginView mainView = new LoginView(root, stage, controller);
+        LoginView mainView = new LoginView(root, stage);
         stage.setTitle("FIRST Project");
         //stage.getIcons().add(new Image("./icon.png"));
-        Controller.setView(mainView);
+        stage.setScene(mainView);
         stage.show();
 
     }
 
     public static Stage getStage() {
         return stage;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    public static void setCurrentUser(User currentUser) {
+        Main.currentUser = currentUser;
     }
 }
