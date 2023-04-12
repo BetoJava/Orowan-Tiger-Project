@@ -49,8 +49,8 @@ public class MenuView extends View {
         applicationSettingsButton.setGraphic(Assets.imageMap75.get("settings"));
         applicationSettingsButton.setContentDisplay(ContentDisplay.LEFT);
 
-        disconnectImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/door.png");
-        disconnectButton.setGraphic(disconnectImage);
+//        disconnectImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/door.png");
+//        disconnectButton.setGraphic(disconnectImage);
         disconnectButton.setContentDisplay(ContentDisplay.LEFT);
     }
 

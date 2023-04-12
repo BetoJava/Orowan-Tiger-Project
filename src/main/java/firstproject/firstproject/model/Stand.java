@@ -6,9 +6,12 @@ public class Stand {
 
     private String standID; //F2
     private ArrayList<Strip> stripList = new ArrayList<>();
+    private Boolean enabled;
 
-    public Stand(String standID) {
+    public Stand(String standID, ArrayList<Strip> stripList, Boolean enabled) {
         this.standID = standID;
+        this.stripList = stripList;
+        this.enabled = enabled;
     }
 
     public ArrayList<Strip> getStripList() {
@@ -18,12 +21,5 @@ public class Stand {
     public String getStandID() {
         return standID;
     }
-
-    public boolean isEnable() {
-        return isEnable;
-    }
-
-    public void setEnable(boolean enable) {
-        isEnable = enable;
-    }
+    public Boolean isEnabled(){ return enabled; }
 }
