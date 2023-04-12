@@ -18,6 +18,8 @@ public class OrowanInputData {
 
     }
 
+
+
     public int getCas() {
         return cas;
     }

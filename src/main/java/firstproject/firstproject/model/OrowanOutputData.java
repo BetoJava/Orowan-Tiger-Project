@@ -40,33 +40,6 @@ public class OrowanOutputData {
         this.hasConverged = hasConverged;
     }
 
-    public static ArrayList<OrowanOutputData> loadDataFromFile(String filename) throws IOException {
-        ArrayList<OrowanOutputData> dataList = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader(filename));
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split("\\t");
-            int caseId = Integer.parseInt(parts[0]);
-            String errors = parts[1];
-            double offsetYield = Double.parseDouble(parts[2]);
-            double friction = Double.parseDouble(parts[3]);
-            double rollingTorque = Double.parseDouble(parts[4]);
-            double sigmaMoy = Double.parseDouble(parts[5]);
-            double sigmaIni = Double.parseDouble(parts[6]);
-            double sigmaOut = Double.parseDouble(parts[7]);
-            double sigmaMax = Double.parseDouble(parts[8]);
-            double forceError = Double.parseDouble(parts[9]);
-            double slipError = Double.parseDouble(parts[10]);
-            boolean hasConverged = parts[11].equals("YES");
-            dataList.add(new OrowanOutputData(caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni, sigmaOut, sigmaMax,
-                    forceError, slipError, hasConverged));
-        }
-
-        reader.close();
-        return dataList;
-    }
-
     public int getCaseId() {
         return caseId;
     }

@@ -38,13 +38,14 @@ public class RawData {
 
     public static ArrayList<RawData> loadRawDataFromFile(String filename) {
         ArrayList<RawData> rawDataList = new ArrayList<>();
-        BufferedReader br = null;
+        BufferedReader reader = null;
         try {
-            br = new BufferedReader(new FileReader(filename));
+            reader = new BufferedReader(new FileReader(filename));
             String line;
 
-            // br.readLine(); // skip first line (headers)
-            while ((line = br.readLine()) != null) {
+
+            while ((line = reader.readLine()) != null) {
+                line = line.replace(",", ".");
                 String[] values = line.split("; ");
                 RawData rawData = new RawData();
                 rawData.Lp = Integer.parseInt(values[0]);
@@ -73,7 +74,7 @@ public class RawData {
                 rawData.WorkRollSpeed = Double.parseDouble(values[23]);
                 rawDataList.add(rawData);
             }
-            br.close();
+            reader.close();
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,10 +1,15 @@
 package firstproject.firstproject.test;
 
 import firstproject.firstproject.model.Orowan;
+import firstproject.firstproject.model.OrowanOutputData;
+
+import java.util.ArrayList;
 
 public class TestOrowanExecution {
 
     public static void main(String[] args) {
-        long computeTime = new Orowan().executeOrowan("1939351","F2");
+        ArrayList<OrowanOutputData> outputData = Orowan.computeOrowanModel("1939351","F2");
     }
+
+
 }

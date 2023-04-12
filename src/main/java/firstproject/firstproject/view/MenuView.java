@@ -38,7 +38,7 @@ public class MenuView extends View {
     }
 
     private void setImage() {
-        settingsImage = new ImageView("firstproject/gui/settings.png");
+        settingsImage = new ImageView("./src/main/firstproject/gui/settings.png");
         applicationSettingsButton.setGraphic(settingsImage);
         applicationSettingsButton.setContentDisplay(ContentDisplay.LEFT);
     }
