@@ -135,6 +135,7 @@ public class Orowan {
         reader.readLine(); // skip first line (headers)
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split("\\t");
+            int matId = Integer.parseInt(stripID);
             int caseId = Integer.parseInt(parts[0]);
             String errors = parts[1];
             double offsetYield = Double.parseDouble(parts[2]);
@@ -147,7 +148,7 @@ public class Orowan {
             double forceError = Double.parseDouble(parts[9]);
             double slipError = Double.parseDouble(parts[10]);
             boolean hasConverged = parts[11].equals("YES");
-            dataList.add(new OrowanOutputData(caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni, sigmaOut, sigmaMax,
+            dataList.add(new OrowanOutputData(matId, caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni, sigmaOut, sigmaMax,
                     forceError, slipError, hasConverged));
         }
 

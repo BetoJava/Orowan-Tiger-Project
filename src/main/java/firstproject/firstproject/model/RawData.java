@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class RawData {
     int Lp;
-    String MatID;
+    int MatID;
     double xTime;
     double xLoc;
     double EnThick;
@@ -49,7 +49,7 @@ public class RawData {
                 String[] values = line.split("; ");
                 RawData rawData = new RawData();
                 rawData.Lp = Integer.parseInt(values[0]);
-                rawData.MatID = values[1];
+                rawData.MatID = Integer.parseInt(values[1]);
                 rawData.xTime = Double.parseDouble(values[2]);
                 rawData.xLoc = Double.parseDouble(values[3]);
                 rawData.EnThick = Double.parseDouble(values[4]);
@@ -90,11 +90,11 @@ public class RawData {
         Lp = lp;
     }
 
-    public String getMatID() {
+    public int getMatID() {
         return MatID;
     }
 
-    public void setMatID(String matID) {
+    public void setMatID(int matID) {
         MatID = matID;
     }
 
