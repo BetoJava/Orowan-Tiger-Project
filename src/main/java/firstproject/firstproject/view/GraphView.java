@@ -55,9 +55,9 @@ public class GraphView extends View {
     private void addDataToGraph(ArrayList<OrowanOutputData> outputData) {
         for(int i = 0; i < outputData.size(); i++) {
             OrowanOutputData data = outputData.get(i);
-            seriesFriction.getData().add(new XYChart.Data<>(i*OrowanOutputData.xTimeMS, data.getFriction()));
-            seriesRollSpeed.getData().add(new XYChart.Data<>(i*OrowanOutputData.xTimeMS, data.getFriction()));
-            seriesSigma.getData().add(new XYChart.Data<>(i*OrowanOutputData.xTimeMS, data.getFriction()));
+//            seriesFriction.getData().add(new XYChart.Data<>(i*OrowanOutputData.xTimeMS, data.getFriction()));
+//            seriesRollSpeed.getData().add(new XYChart.Data<>(i*OrowanOutputData.xTimeMS, data.getFriction()));
+//            seriesSigma.getData().add(new XYChart.Data<>(i*OrowanOutputData.xTimeMS, data.getFriction()));
         }
     }
 

@@ -25,103 +25,97 @@ public class H2Database {
 
     public static H2Database getInstance(){
         if(instance == null)
-            H2Database.instance = new H2Database("tigerDatabase", "sa", "");
+            H2Database.instance = new H2Database("test", "sa", "");//"TigerDatabase", "sherekhan", "grrr");
 
         return instance;
     }
 
     private H2Database(String dbName, String username, String password){
         //Set up database object
-        H2Database.connectionPath = "jdbc:h2:file:~/" + dbName;
+        H2Database.connectionPath = "jdbc:h2:tcp://localhost/~/" + dbName;
         H2Database.dbUsername = username;
         H2Database.dbPassword = password;
 
         try {
+            Class.forName("org.h2.Driver");
+
             H2Database.connection = DriverManager.getConnection(H2Database.connectionPath, H2Database.dbUsername, H2Database.dbPassword);
-        }catch (SQLException e) {
+            setUpDatabase();
+        }catch (Exception e) {
             e.printStackTrace();
         }
-
-        //Create appropriate tables
-        setUpDatabase();
     }
 
-    private void setUpDatabase(){
+    private void setUpDatabase() throws SQLException{
 
-        try {
-            Statement stmt = connection.createStatement();
+        Statement stmt = connection.createStatement();
 
-            String sql = "CREATE TABLE IF NOT EXISTS sensor_data " +
-                    "(lp INT NOT NULL, " +
-                    " mat_id INT NOT NULL, " +
-                    " x_time TIMESTAMP NOT NULL, " +
-                    " x_loc FLOAT NOT NULL, " +
-                    " en_thick FLOAT NOT NULL, " +
-                    " ex_thick FLOAT NOT NULL, " +
-                    " en_tens FLOAT NOT NULL, " +
-                    " ex_tens FLOAT NOT NULL, " +
-                    " roll_force FLOAT NOT NULL, " +
-                    " f_slip FLOAT NOT NULL, " +
-                    " diameter FLOAT NOT NULL, " +
-                    " rolled_length_wr FLOAT NOT NULL, " +
-                    " young_modulus FLOAT NOT NULL, " +
-                    " backup_roll_dia FLOAT NOT NULL, " +
-                    " rolled_length_br FLOAT NOT NULL, " +
-                    " mu FLOAT NOT NULL, " +
-                    " torque FLOAT NOT NULL, " +
-                    " avg_sigma FLOAT NOT NULL, " +
-                    " input_error FLOAT NOT NULL, " +
-                    " lub_wfl_up FLOAT NOT NULL, " +
-                    " lub_wfl_lo FLOAT NOT NULL, " +
-                    " lub_oil_fl_up FLOAT NOT NULL, " +
-                    " lub_oil_fl_lo FLOAT NOT NULL, " +
-                    " wr_speed FLOAT NOT NULL)";
-            stmt.executeUpdate(sql);
+        String sql = "CREATE TABLE IF NOT EXISTS sensor_data " +
+                "(lp INT NOT NULL, " +
+                " mat_id INT NOT NULL, " +
+                " x_time TIMESTAMP NOT NULL, " +
+                " x_loc FLOAT NOT NULL, " +
+                " en_thick FLOAT NOT NULL, " +
+                " ex_thick FLOAT NOT NULL, " +
+                " en_tens FLOAT NOT NULL, " +
+                " ex_tens FLOAT NOT NULL, " +
+                " roll_force FLOAT NOT NULL, " +
+                " f_slip FLOAT NOT NULL, " +
+                " diameter FLOAT NOT NULL, " +
+                " rolled_length_wr FLOAT NOT NULL, " +
+                " young_modulus FLOAT NOT NULL, " +
+                " backup_roll_dia FLOAT NOT NULL, " +
+                " rolled_length_br FLOAT NOT NULL, " +
+                " mu FLOAT NOT NULL, " +
+                " torque FLOAT NOT NULL, " +
+                " avg_sigma FLOAT NOT NULL, " +
+                " input_error FLOAT NOT NULL, " +
+                " lub_wfl_up FLOAT NOT NULL, " +
+                " lub_wfl_lo FLOAT NOT NULL, " +
+                " lub_oil_fl_up FLOAT NOT NULL, " +
+                " lub_oil_fl_lo FLOAT NOT NULL, " +
+                " wr_speed FLOAT NOT NULL)";
+        stmt.executeUpdate(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS orowan_data " +
-                    "(mat_id INT NOT NULL, " +
-                    " case_id INT NOT NULL, " +
-                    " errors VARCHAR(255) NOT NULL, " +
-                    " offset_yield FLOAT NOT NULL, " +
-                    " friction FLOAT NOT NULL, " +
-                    " rolling_torque FLOAT NOT NULL, " +
-                    " sigma_moy FLOAT NOT NULL, " +
-                    " sigma_ini FLOAT NOT NULL, " +
-                    " sigma_out FLOAT NOT NULL, " +
-                    " sigma_max FLOAT NOT NULL, " +
-                    " force_error_pct FLOAT NOT NULL, " +
-                    " slip_error_pct FLOAT NOT NULL, " +
-                    " has_converged BOOLEAN NOT NULL)";
-            stmt.executeUpdate(sql);
+        sql = "CREATE TABLE IF NOT EXISTS orowan_data " +
+                "(mat_id INT NOT NULL, " +
+                " case_id INT NOT NULL, " +
+                " errors VARCHAR(255) NOT NULL, " +
+                " offset_yield FLOAT NOT NULL, " +
+                " friction FLOAT NOT NULL, " +
+                " rolling_torque FLOAT NOT NULL, " +
+                " sigma_moy FLOAT NOT NULL, " +
+                " sigma_ini FLOAT NOT NULL, " +
+                " sigma_out FLOAT NOT NULL, " +
+                " sigma_max FLOAT NOT NULL, " +
+                " force_error_pct FLOAT NOT NULL, " +
+                " slip_error_pct FLOAT NOT NULL, " +
+                " has_converged BOOLEAN NOT NULL)";
+        stmt.executeUpdate(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS users " +
-                    "(id INT AUTO_INCREMENT PRIMARY KEY," +
-                    " username VARCHAR(255) NOT NULL, " +
-                    " password VARCHAR(255) NOT NULL, " +
-                    " isEngineer BOOLEAN NOT NULL)";
-            stmt.executeUpdate(sql);
+        sql = "CREATE TABLE IF NOT EXISTS users " +
+                "(id INT AUTO_INCREMENT PRIMARY KEY," +
+                " username VARCHAR(255) NOT NULL, " +
+                " password VARCHAR(255) NOT NULL, " +
+                " isEngineer BOOLEAN NOT NULL)";
+        stmt.executeUpdate(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS users_stands " +
-                    "(user_id INT AUTO_INCREMENT PRIMARY KEY, " +
-                    "stand_id VARCHAR(255) NOT NULL, " +
-                    "FOREIGN KEY(user_id) REFERENCES users(id))," +
-                    "FOREIGN KEY(stand_id) REFERENCES strip_stand(stand_id)";
-            stmt.executeUpdate(sql);
+        sql = "CREATE TABLE IF NOT EXISTS strip_stand (" +
+                "mat_id INT PRIMARY KEY," +
+                "stand_id VARCHAR(255))";
+        stmt.executeUpdate(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS strip_stand (" +
-                    "mat_id INT PRIMARY KEY," +
-                    "stand_id VARCHAR(255))";
-            stmt.executeUpdate(sql);
+        sql = "CREATE TABLE IF NOT EXISTS users_stands " +
+                "(user_id INT AUTO_INCREMENT PRIMARY KEY," +
+                " stand_id VARCHAR(255) NOT NULL)";
+        stmt.executeUpdate(sql);
 
-            sql = "CREATE TABLE IF NOT EXISTS stands (" +
-                    "stand_id VARCHAR(255) PRIMARY KEY, " +
-                    "enabled BOOLEAN NOT NULL)";
-            stmt.executeUpdate(sql);
+        sql = "CREATE TABLE IF NOT EXISTS stands (" +
+                "stand_id VARCHAR(255) PRIMARY KEY, " +
+                "enabled BOOLEAN NOT NULL)";
+        stmt.executeUpdate(sql);
 
-            stmt.close();
-        }catch (SQLException e) {
-            e.printStackTrace();
-        }
+        stmt.close();
     }
 
     //---------------------------DATA MANAGEMENT--------------------------------
