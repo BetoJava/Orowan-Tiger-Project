@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import firstproject.firstproject.model.OrowanOutputData;
 import firstproject.firstproject.model.RawData;
+import firstproject.firstproject.model.User;
+import firstproject.firstproject.model.Stand;
+import firstproject.firstproject.model.Strip;
 
 public class H2Database {
 
@@ -18,7 +21,7 @@ public class H2Database {
 
     private static boolean userIsEngineer = false;
     private static int userId = -1;
-    private static ArrayList<String> userStands;
+    private static ArrayList<Stand> userStands;
 
     public static H2Database getInstance(){
         if(instance == null)
@@ -235,9 +238,11 @@ public class H2Database {
     }
 
     //----------------------------USER MANAGEMENT----------------------------------
-    public ArrayList<String> getStandsForUser(){
+    public ArrayList<Stand> getUserStands(){
         return H2Database.userStands;
     }
+
+    public boolean isUserEngineer(){ return H2Database.userIsEngineer; }
 
     public boolean loginUser(String username, String password){
         boolean loginSuccessful = false;
@@ -269,32 +274,17 @@ public class H2Database {
     }
 
     public void refreshUserStands(){
-        H2Database.userStands = getUserStands();
+        H2Database.userStands = loadUserStands();
     }
 
-    private ArrayList<String> getUserStands(){
+    private ArrayList<Stand> loadUserStands(){
 
-        ArrayList<String> stands = new ArrayList<String>();
+        ArrayList<Stand> stands;
 
-        try {
-            if (H2Database.userIsEngineer) {
-
-                //TODO: Get all possible stands
-
-            } else {
-                PreparedStatement pstmt_worker = connection.prepareStatement("SELECT stand_id FROM users_stand WHERE user_id=?");
-                pstmt_worker.setInt(1, H2Database.userId);
-
-                ResultSet rs_worker = pstmt_worker.executeQuery();
-
-                while (rs_worker.next())
-                    stands.add(rs_worker.getString("stand_id"));
-
-                pstmt_worker.close();
-                rs_worker.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        if (H2Database.userIsEngineer) {
+            stands = getAllStands();
+        } else {
+            stands = getUserStands(userId);
         }
 
         return stands;
@@ -400,50 +390,126 @@ public class H2Database {
         }
     }
 
-    public ArrayList<Integer> getStrips(String stand){
-        ArrayList<Integer> matList = new ArrayList<Integer>();
-
-        try {
-            String selectSql = "SELECT mat_id FROM strip_stand WHERE stand_id = ?";
-            PreparedStatement pstmt = connection.prepareStatement(selectSql);
-            pstmt.setString(1, stand);
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                matList.add(rs.getInt("mat_id"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return matList;
-    }
-
-    public void addStand(Connection conn, String stand_id) throws SQLException {
+    public void addStand(String stand_id) {
         String sql = "INSERT INTO stands (stand_id, enabled) VALUES (?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, stand_id);
             pstmt.setBoolean(2, true);
             pstmt.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     // Enable a stand
-    public void enableStand(Connection conn, String stand_id) throws SQLException {
+    public void enableStand(String stand_id){
         String sql = "UPDATE stands SET enabled = true WHERE stand_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, stand_id);
             pstmt.executeUpdate();
+        }catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     // Disable a stand
-    public void disableStand(Connection conn, String stand_id) throws SQLException {
+    public void disableStand(String stand_id) {
         String sql = "UPDATE stands SET enabled = false WHERE stand_id = ?";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, stand_id);
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-    public boolean isUserEngineer(){ return H2Database.userIsEngineer; }
+    public ArrayList<User> getUsers(){
+        ArrayList<User> users = new ArrayList<>();
+
+        if (!isUserEngineer())
+            return users;
+
+        String sql = "SELECT id, username, password, isEngineer FROM users";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String role = rs.getBoolean("isEngineer") ? User.ENGINEER : User.WORKER;
+                User user = new User(id, username, password, role);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    public ArrayList<Stand> getAllStands(){
+        ArrayList<Stand> stands = new ArrayList<>();
+
+        if(!isUserEngineer())
+            return stands;
+
+        String sql = "SELECT stand_id, enabled FROM stands";
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)){
+            getStands_aux(pstmt, stands);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stands;
+    }
+
+    public ArrayList<Stand> getUserStands(int userID){
+        ArrayList<Stand> stands = new ArrayList<>();
+
+        if(!isUserEngineer() && !(H2Database.userId == userID))
+            return stands;
+
+        String sql = "SELECT stand_id, enabled FROM stands " +
+                "WHERE stand_id in " +
+                "(SELECT stand_id FROM users_stands" +
+                "WHERE user_id = ?)";
+        try(PreparedStatement pstmt = connection.prepareStatement(sql)){
+            pstmt.setInt(1, userID);
+            getStands_aux(pstmt, stands);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return stands;
+    }
+
+    private ArrayList<Stand> getStands_aux(PreparedStatement pstmt, ArrayList<Stand> stands) throws SQLException{
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            String stand_id = rs.getString("stand_id");
+            Boolean enabled = rs.getBoolean("enabled");
+            ArrayList<Strip> strips = getStrips(stand_id);
+            stands.add(new Stand(stand_id, strips, enabled));
+        }
+
+        return stands;
+    }
+
+    private ArrayList<Strip> getStrips(String standId){
+        ArrayList<Strip> strips = new ArrayList<>();
+
+        try {
+            String selectSql = "SELECT mat_id FROM strip_stand WHERE stand_id = ?";
+            PreparedStatement pstmt = connection.prepareStatement(selectSql);
+            pstmt.setString(1, standId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                strips.add(new Strip(rs.getInt("mat_id")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return strips;
+    }
 }

@@ -5,19 +5,25 @@ public class User {
     public static String WORKER = "worker";
     public static String ENGINEER = "engineer";
 
+    private int id;
     private String identifier;
     private String password;
     private String role;
 
-    public User(String identifier, String password, String role) {
+    public User(int id, String identifier, String password, String role) {
+        this.id = id;
         this.identifier = identifier;
         this.password = password;
         this.role = role;
     }
 
-    public User(String identifier, String password) {
-        this(identifier, password, WORKER);
+    public User(int id, String identifier, String password) {
+        this(id, identifier, password, WORKER);
     }
+
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getIdentifier() {
         return identifier;
