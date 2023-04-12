@@ -24,7 +24,6 @@ public class MenuView extends View {
     private Button disconnectButton = new Button("Disconnect");
 
 
-
     /**
      * Constructeur de la main view
      *

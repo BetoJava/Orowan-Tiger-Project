@@ -1,14 +1,18 @@
 package firstproject.firstproject.model;
 
+import java.util.ArrayList;
+
 public class User {
 
-    public static String WORKER = "worker";
-    public static String ENGINEER = "engineer";
+    public static String WORKER = "Worker";
+    public static String ENGINEER = "Engineer";
 
     private int id;
     private String identifier;
     private String password;
     private String role;
+
+    private ArrayList<Stand> standList = new ArrayList<>();
 
     public User(int id, String identifier, String password, String role) {
         this.id = id;
@@ -47,5 +51,9 @@ public class User {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public ArrayList<Stand> getStandList() {
+        return standList;
     }
 }

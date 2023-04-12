@@ -32,7 +32,7 @@ public class Main extends Application {
     public void start(Stage stage) {
         this.stage = stage;
         Assets.loadAssets(); // Load image assets
-        setCurrentUser(new User("red","ihi"));
+        setCurrentUser(new User(0, "red","ihi"));
         getCurrentUser().getStandList().add(new Stand("F2"));
         // Set up GUI //
         VBox root = new VBox();

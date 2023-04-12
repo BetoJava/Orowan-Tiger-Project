@@ -5,30 +5,30 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class RawData {
-    int Lp;
-    int MatID;
-    double xTime;
-    double xLoc;
-    double EnThick;
-    double ExThick;
-    double EnTens;
-    double ExTens;
-    double RollForce;
-    double FSlip;
-    double Diameter;
-    double RolledLengthForWorkRolls;
-    double youngModulus;
-    double BackupRollDia;
-    double RolledLengthForBackupRolls;
-    double mu;
-    double torque;
-    double averageSigma;
-    double inputError;
-    double LubWFlUp;
-    double LubWFlLo;
-    double LubOilFlUp;
-    double LubOilFlLo;
-    double WorkRollSpeed;
+    private int Lp;
+    private int MatID;
+    private double xTime;
+    private double xLoc;
+    private double EnThick;
+    private double ExThick;
+    private double EnTens;
+    private double ExTens;
+    private double RollForce;
+    private double FSlip;
+    private double Diameter;
+    private double RolledLengthForWorkRolls;
+    private double youngModulus;
+    private double BackupRollDia;
+    private double RolledLengthForBackupRolls;
+    private double mu;
+    private double torque;
+    private double averageSigma;
+    private double inputError;
+    private double LubWFlUp;
+    private double LubWFlLo;
+    private double LubOilFlUp;
+    private double LubOilFlLo;
+    private double WorkRollSpeed;
 
     public RawData() {
 

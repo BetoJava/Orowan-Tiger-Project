@@ -164,7 +164,7 @@ public class H2Database {
 
         try {
             PreparedStatement stmt = connection.prepareStatement("INSERT INTO orowan_data (mat_id, case_id, errors, offset_yield, friction, rolling_torque, sigma_moy, sigma_ini, sigma_out, sigma_max, force_error_pct, slip_error_pct, has_converged) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             for (OrowanOutputData row : data) {
                 stmt.setInt(1, row.getMatID());
