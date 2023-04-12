@@ -42,7 +42,7 @@ public class LoginView extends View {
 
     private void createButton() {
         VBox root = new VBox();
-        connectionButton.setOnAction(e -> stage.setScene(new GraphView(root, stage, controller)));
+        connectionButton.setOnAction(e -> stage.setScene(new MenuView(root, stage, controller)));
         // La même chose peut être faite de cette manière :
         /*
         connectionButton.setOnAction(new EventHandler<ActionEvent>() {

@@ -2,7 +2,6 @@ package firstproject.firstproject;
 
 import firstproject.firstproject.controller.Controller;
 import firstproject.firstproject.view.LoginView;
-import firstproject.firstproject.view.MenuView;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
