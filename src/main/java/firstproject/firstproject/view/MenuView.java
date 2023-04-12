@@ -1,5 +1,6 @@
 package firstproject.firstproject.view;
 
+import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.Controller;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,11 +19,6 @@ public class MenuView extends View {
     private Button viewGraphsButton = new Button("View Graphs");
     private Button manageUsersButton = new Button("Manage Users");
     private Button applicationSettingsButton = new Button("Application Settings");
-    private ImageView graphsImage;
-    private ImageView usersImage;
-
-    private ImageView settingsImage;
-    private ImageView disconnectImage;
 
     private HBox graphsBox = new HBox();
     private HBox usersBox = new HBox();
@@ -50,22 +46,16 @@ public class MenuView extends View {
     }
 
     private void setImage() {
-        String currentDirectory = System.getProperty("user.dir");
-        graphsImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/stats.png");
-        viewGraphsButton.setGraphic(graphsImage);
+        viewGraphsButton.setGraphic(Assets.graphsImage);
         viewGraphsButton.setContentDisplay(ContentDisplay.LEFT);
-        usersImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/manageAccount.png");
-        manageUsersButton.setGraphic(usersImage);
+        manageUsersButton.setGraphic(Assets.usersImage);
         manageUsersButton.setContentDisplay(ContentDisplay.LEFT);
-        settingsImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/settings.png");
-        applicationSettingsButton.setGraphic(settingsImage);
+        applicationSettingsButton.setGraphic(Assets.settingsImage);
         applicationSettingsButton.setContentDisplay(ContentDisplay.LEFT);
 
         disconnectImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/door.png");
         disconnectButton.setGraphic(disconnectImage);
         disconnectButton.setContentDisplay(ContentDisplay.LEFT);
-
-
 
     }
 
@@ -122,7 +112,7 @@ public class MenuView extends View {
             button.setPrefWidth(300); // taille préférée
         }
 
-// Utiliser des propriétés de redimensionnement pour la VBox et les HBox
+        // Utiliser des propriétés de redimensionnement pour la VBox et les HBox
         root.setFillWidth(true);
         for (HBox hbox : new HBox[]{graphsBox,usersBox,settingsBox}) {
             hbox.setFillHeight(true);

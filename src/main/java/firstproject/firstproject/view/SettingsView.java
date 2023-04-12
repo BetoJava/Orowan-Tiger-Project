@@ -1,5 +1,6 @@
 package firstproject.firstproject.view;
 
+import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.Controller;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -43,9 +44,7 @@ public class SettingsView extends View{
     }
 
     private void setImage() {
-        String currentDirectory = System.getProperty("user.dir");
-        settingsImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/settings.png");
-        titleLabel.setGraphic(settingsImage);
+        titleLabel.setGraphic(Assets.settingsImage);
     }
 
 

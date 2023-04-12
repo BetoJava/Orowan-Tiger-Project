@@ -17,7 +17,7 @@ public abstract class View extends Scene {
      * @param controller Controleur associé à la view
      */
     public View(VBox root, Stage primaryStage, Controller controller) {
-        super(root);
+        super(root, 1200, 700);
         this.stage = primaryStage;
 
         //createContent(controller);

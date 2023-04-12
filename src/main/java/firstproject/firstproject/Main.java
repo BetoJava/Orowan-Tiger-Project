@@ -1,5 +1,6 @@
 package firstproject.firstproject;
 
+import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.Controller;
 import firstproject.firstproject.view.LoginView;
 import javafx.application.Application;
@@ -27,7 +28,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-
+        Assets.loadAssets(); // Load image assets
         Controller controller = new Controller();
 
         // Set up GUI //
