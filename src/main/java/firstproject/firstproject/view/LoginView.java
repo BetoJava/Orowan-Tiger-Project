@@ -47,7 +47,6 @@ public class LoginView extends View {
             if(h2.loginUser(currentUser.getIdentifier(), currentUser.getPassword())) {
                 stage.setScene(new MenuView(new VBox(), stage));
             }
-
         });
     }
 

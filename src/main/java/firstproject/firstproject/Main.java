@@ -2,12 +2,13 @@ package firstproject.firstproject;
 
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
-import firstproject.firstproject.model.Stand;
-import firstproject.firstproject.model.User;
+import firstproject.firstproject.model.*;
 import firstproject.firstproject.view.LoginView;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class Main extends Application {
 
@@ -39,6 +40,8 @@ public class Main extends Application {
         h2.addUser("jb","jb",true);
         h2.addStandForUser(h2.getUsers().get(0).getId(), "F2");
 
+        fillDatabase(h2);
+
 
         // Set up GUI //
         VBox root = new VBox();
@@ -48,6 +51,15 @@ public class Main extends Application {
         stage.setScene(mainView);
         stage.show();
 
+    }
+
+    private void fillDatabase(H2Database h2) {
+
+        ArrayList<OrowanOutputData> outputData = Orowan.computeOrowanModel("1939351","F2");
+        ArrayList<ProcessedOutputData> processedOutputData = Orowan.getProcessedOutputData(outputData, "1939351","F2");
+
+        h2.writeSensorData();
+        h2.writeOrowanData();
     }
 
     public static Stage getStage() {

@@ -29,7 +29,6 @@ public class GraphView extends View {
     private XYChart.Series<Number, Number> seriesRollSpeed;
     private NumberAxis xAxis = new NumberAxis();
     private NumberAxis yAxis = new NumberAxis();
-    private ArrayList<OrowanOutputData> outputData;
     private Label computeTimeLabel;
     private CheckBox checkBoxRollSpeed;
     private CheckBox checkBoxFriction;
@@ -45,8 +44,6 @@ public class GraphView extends View {
     public GraphView(VBox root, Stage primaryStage) {
         super(root, primaryStage);
 
-        outputData = Orowan.computeOrowanModel("1939351","F2");
-        ArrayList<ProcessedOutputData> processedOutputData = Orowan.getProcessedOutputData(outputData, "1939351","F2");
 
         createButtons(root);
         createGraph();
