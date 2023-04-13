@@ -24,7 +24,7 @@ public class Orowan {
         String fileName = "./FichiersOrowan";
 
         try {
-            ArrayList<OrowanInputData> inputDataList = convertRawDataToInputData(fileName + "/Krakov/", stripID, stand);
+            ArrayList<OrowanInputData> inputDataList = convertRawDataToInputData(getRawData(stripID, stand), stripID, stand);
             saveInputDataToTxt(inputDataList, fileName + "/Model/", stripID, stand);
             lastComputeTime = executeOrowan(fileName + "/Model/", stripID, stand);
             ArrayList<OrowanOutputData> outputDataList = loadOutputDataFromFile(fileName + "/Model/", stripID, stand);
@@ -74,15 +74,20 @@ public class Orowan {
         return processedOutputData;
     }
 
+    /**
+     * Renvoie les RawData du stand et stripID selectionné.
+     */
+    public static ArrayList<RawData> getRawData(String stripID, String stand) {
+        return RawData.loadRawDataFromFile("./FichiersOrowan/Krakov/" + stripID + "_" + stand + ".txt");
+    }
 
     /**
      * Ouvre le fichier des données brutes à partir du stripID et du stand et convertie ces RawData
      * en OrowanInputData. Renvoie la liste d'objets OrowanInputData correspondante.
      */
-    public static ArrayList<OrowanInputData> convertRawDataToInputData(String filename, String stripID, String stand) {
+    public static ArrayList<OrowanInputData> convertRawDataToInputData(ArrayList<RawData> rawData, String stripID, String stand) {
         // Les RawData sont les données dans les 1939351_F2.txt
         // Les OrowanInputData sont les données dans inv_cst.txt
-        ArrayList<RawData> rawData = RawData.loadRawDataFromFile(filename + stripID + "_" + stand + ".txt");
         ArrayList<OrowanInputData> inputData = new ArrayList<>();
         for(int i = 0; i < rawData.size(); i++) {
             OrowanInputData orowanInputData = new OrowanInputData();

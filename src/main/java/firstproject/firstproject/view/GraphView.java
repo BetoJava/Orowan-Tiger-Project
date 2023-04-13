@@ -1,6 +1,7 @@
 package firstproject.firstproject.view;
 
 import firstproject.firstproject.assets.Assets;
+import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Orowan;
 import firstproject.firstproject.model.OrowanOutputData;
 import firstproject.firstproject.model.ProcessedOutputData;
@@ -16,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GraphView extends View {
@@ -44,8 +46,16 @@ public class GraphView extends View {
     public GraphView(VBox root, Stage primaryStage) {
         super(root, primaryStage);
 
-
         createButtons(root);
+        H2Database h2 = H2Database.getInstance();
+        ArrayList<OrowanOutputData> outputData2;
+        ArrayList<OrowanOutputData> outputData3;
+        try {
+            outputData2 = h2.loadOrowanData(2);
+            outputData3 = h2.loadOrowanData(3);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         createGraph();
         addDataToGraph(processedOutputData);
         createScene(root);
