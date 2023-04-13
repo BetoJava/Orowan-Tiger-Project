@@ -15,14 +15,14 @@ import javafx.stage.Stage;
 
 public class LoginView extends View {
 
-    private GridPane gp = new GridPane();
+
 
     private Label titleLabel = new Label("OROWAN");
-
+    private Label errorLabel =  new Label ("");
     private VBox fieldBox = new VBox();
 
     private HBox identifierBox = new HBox();
-    private Label identifierLabel = new Label("User ID : ");
+    private Label identifierLabel = new Label("Username : ");
     private TextField identifierTextField = new TextField();
 
     private HBox passwordBox = new HBox();
@@ -62,6 +62,9 @@ public class LoginView extends View {
                 stage.setScene(new MenuView(new VBox(), stage));
                 System.out.println(Main.getCurrentUser().getStandList());
             }
+            else {
+                errorLabel.setText("Wrong username or password.");
+            }
         });
     }
 
@@ -70,6 +73,7 @@ public class LoginView extends View {
 
         // Add Regions to root children //
         root.getChildren().add(titleLabel);
+        root.getChildren().add(errorLabel);
         root.getChildren().add(fieldBox);
         root.getChildren().add(connectionButton);
 
@@ -104,6 +108,7 @@ public class LoginView extends View {
                 "-fx-alignment: center");
 
         // Set text color
+        errorLabel.setStyle("-fx-text-fill: red;"+"-fx-alignment: center");
         identifierLabel.setStyle("-fx-text-fill: white;");
         passwordLabel.setStyle("-fx-text-fill: white;");
 

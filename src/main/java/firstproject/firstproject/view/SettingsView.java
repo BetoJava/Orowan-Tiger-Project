@@ -107,14 +107,16 @@ public class SettingsView extends View{
                 "-fx-font-size: 16;" +
                 "-fx-padding: 0px 16px;");
 
-        comboBox.setStyle("-fx-background-color: #222222;" +
+        comboBox.setStyle("-fx-font-weight: bold;"+"-fx-background-color: #2f2f2f;" +
                 " -fx-text-fill: white;" +
                 "-fx-padding: 32px;");
+        comboBox.autosize();
         standBox.setStyle("-fx-alignment: center");
         titleLabel.setStyle("-fx-font-size: 30px;" +
                 "-fx-font-family: Times New Roman;" +
                 "-fx-text-fill: white;" +
                 "-fx-padding: 48px;");
+        standLabel.setStyle("-fx-text-fill: white;");
 
         root.setStyle("-fx-alignment: center;" +
                 "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
