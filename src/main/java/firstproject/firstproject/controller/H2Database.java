@@ -106,7 +106,7 @@ public class H2Database {
 
         sql = "CREATE TABLE IF NOT EXISTS strip_stand (" +
                 "stand_id VARCHAR(255)," +
-                "mat_id INT PRIMARY KEY)";
+                "mat_id INT)";
         stmt.executeUpdate(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS users_stands " +
@@ -423,6 +423,10 @@ public class H2Database {
             deleteStandsStatement.executeUpdate();
             deleteStandsStatement.close();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
             PreparedStatement deleteUserStatement = connection.prepareStatement(
                     "DELETE FROM users WHERE id = ?"
             );
@@ -432,6 +436,48 @@ public class H2Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateUser(int userId, String username, String password, boolean isEngineer) {
+        if (!H2Database.isUserEngineer())
+            return;
+
+        try {
+            PreparedStatement updateUserStatement = connection.prepareStatement(
+                    "UPDATE users SET username = ?, password = ?, isEngineer = ? WHERE id = ?;"
+            );
+            updateUserStatement.setString(1, username);
+            updateUserStatement.setString(2, password);
+            updateUserStatement.setBoolean(3, isEngineer);
+            updateUserStatement.setInt(4, userId);
+            updateUserStatement.executeUpdate();
+            updateUserStatement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void updateStand(String stand_id, boolean isEnable) {
+        if (!H2Database.isUserEngineer())
+            return;
+
+        try {
+            PreparedStatement updateUserStatement = connection.prepareStatement(
+                    "UPDATE stands SET enabled = ? WHERE stand_id = ?;"
+            );
+            updateUserStatement.setString(1, String.valueOf(isEnable));
+            updateUserStatement.setString(2, stand_id);
+            updateUserStatement.executeUpdate();
+            updateUserStatement.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void addStandForUser(int userId, String standId) {
@@ -481,7 +527,7 @@ public class H2Database {
         }
     }
 
-    public void add_strip(int mat, String stand){
+    public void addStrip(int mat, String stand){
         try {
             String insertSql = "INSERT INTO strip_stand (mat_id, stand_id) VALUES (?, ?)";
             PreparedStatement pstmt = connection.prepareStatement(insertSql);
@@ -573,7 +619,7 @@ public class H2Database {
 
         String sql = "SELECT stand_id, enabled FROM stands " +
                 "WHERE stand_id in " +
-                "(SELECT stand_id FROM users_stands" +
+                "(SELECT stand_id FROM users_stands " +
                 "WHERE user_id = ?)";
         try(PreparedStatement pstmt = connection.prepareStatement(sql)){
             pstmt.setInt(1, userID);

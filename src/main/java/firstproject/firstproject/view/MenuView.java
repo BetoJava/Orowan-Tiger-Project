@@ -1,5 +1,6 @@
 package firstproject.firstproject.view;
 
+import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ public class MenuView extends View {
     private Button viewGraphsButton = new Button("View Graphs");
     private Button manageUsersButton = new Button("Manage Users");
     private Button applicationSettingsButton = new Button("Application Settings");
+    private Label labelUserName;
 
     private HBox graphsBox = new HBox();
     private HBox usersBox = new HBox();
@@ -66,7 +68,7 @@ public class MenuView extends View {
     private void createScene(VBox root) {
 
         // Add Regions to root children //
-        root.getChildren().addAll(graphsBox, usersBox, settingsBox, disconnectBox);
+        root.getChildren().addAll(titleLabel, graphsBox, usersBox, settingsBox, disconnectBox, labelUserName);
 
         // Add Components to Regions children //
         graphsBox.getChildren().add(viewGraphsButton);
@@ -77,6 +79,9 @@ public class MenuView extends View {
     }
 
     private void customComponents(VBox root) {
+        labelUserName = new Label("User : " + Main.getCurrentUser().getIdentifier());
+        labelUserName.setStyle("-fx-text-fill: white;" +
+                "-fx-font-style: italic;");
 
         graphsBox.setAlignment(Pos.CENTER);
         usersBox.setAlignment(Pos.CENTER);
@@ -110,8 +115,9 @@ public class MenuView extends View {
             hbox.setStyle("-fx-padding: 4px;");
         }
 
-        titleLabel.setStyle("-fx-font-size: 60px;" +
-                "-fx-font-family: Times New Roman;");
+        titleLabel.setStyle("-fx-font-size: 30px;" +
+                "-fx-font-family: Times New Roman;" +
+                "-fx-text-fill: white;");
 
         root.setStyle("-fx-alignment: center;" +
                 "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +

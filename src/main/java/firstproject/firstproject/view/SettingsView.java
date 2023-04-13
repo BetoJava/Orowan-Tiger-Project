@@ -2,6 +2,7 @@ package firstproject.firstproject.view;
 
 import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
+import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Stand;
 import firstproject.firstproject.model.User;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ public class SettingsView extends View{
 
     private HBox standBox = new HBox();
     private Button menuButton = new Button("Menu");
+    private Label labelUserName;
 
 
     private ComboBox<String> comboBox = new ComboBox<>();
@@ -52,7 +54,7 @@ public class SettingsView extends View{
         // ComboBox
 
         for(Stand s : Main.getCurrentUser().getStandList()) {
-            comboBox.getItems().add(s.getStandID());
+            comboBox.getItems().add("F" + s.getStandID());
         }
 
         // Action Toggle button
@@ -60,32 +62,40 @@ public class SettingsView extends View{
         toggleButton.setStyle("-fx-background-color: #383838; -fx-text-fill: white;");
 
         toggleButton.setOnAction(event -> {
+            String standID = String.valueOf(comboBox.getValue().charAt(1));
+            standID = String.valueOf(Integer.parseInt(standID));
             if(toggleButton.isSelected()) {
                 toggleButton.setText("Enable");
                 toggleButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
-                getStandFromID(comboBox.getValue()).setEnable(true);
+                getStandFromID(standID).setEnable(true);
             } else {
                 toggleButton.setText("Disable");
                 toggleButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
-                getStandFromID(comboBox.getValue()).setEnable(false);
+                getStandFromID(standID).setEnable(false);
             }
         });
 
         // Action comboBox
         comboBox.setOnAction(event -> {
-            Stand selectedStand = getStandFromID(comboBox.getValue());
+            String standID = String.valueOf(comboBox.getValue().charAt(1));
+            standID = String.valueOf(Integer.parseInt(standID));
+            Stand selectedStand = getStandFromID(standID);
             toggleButton.setSelected(selectedStand.isEnable());
             toggleButton.setText(selectedStand.isEnable() ? "Enable" : "Disable");
+            H2Database.getInstance().updateStand(standID, selectedStand.isEnable());
         });
 
 
 
         standBox.getChildren().addAll(standLabel, comboBox, toggleButton);
-        root.getChildren().addAll(titleLabel, standBox, menuButton);
+        root.getChildren().addAll(titleLabel, labelUserName, standBox, menuButton);
 
 
     }
     private void customComponents(VBox root) {
+        labelUserName = new Label("User : " + Main.getCurrentUser().getIdentifier());
+        labelUserName.setStyle("-fx-font-weight: bold;"+"-fx-text-fill: white;" +
+                "-fx-font-style: italic;");
 
         titleLabel.setGraphic(Assets.imageMap75.get("settings"));
         menuButton.setGraphic(Assets.imageMap75.get("home"));
@@ -94,13 +104,14 @@ public class SettingsView extends View{
                 "-fx-text-fill: white;" +
                 "-fx-background-radius: 50;" +
                 "-fx-pref-height: 50;" +
-                "-fx-font-size: 16;");
+                "-fx-font-size: 16;" +
+                "-fx-padding: 0px 16px;");
 
         comboBox.setStyle("-fx-background-color: #222222;" +
                 " -fx-text-fill: white;" +
                 "-fx-padding: 32px;");
         standBox.setStyle("-fx-alignment: center");
-        titleLabel.setStyle("-fx-font-size: 60px;" +
+        titleLabel.setStyle("-fx-font-size: 30px;" +
                 "-fx-font-family: Times New Roman;" +
                 "-fx-text-fill: white;" +
                 "-fx-padding: 48px;");
@@ -116,7 +127,7 @@ public class SettingsView extends View{
 
     private Stand getStandFromID(String standID) {
         for(Stand s : Main.getCurrentUser().getStandList()) {
-            if(s.getStandID() == standID) {
+            if(Integer.valueOf(s.getStandID()) == Integer.valueOf(standID)) {
                 return s;
             }
         }

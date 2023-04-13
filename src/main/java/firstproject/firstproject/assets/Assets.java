@@ -30,6 +30,7 @@ public class Assets {
 
         imageMap75.put("blackStats", setScale(new ImageView(statsPath.toExternalForm()), 0.75f));
         imageMap75.put("blackHome", setScale(new ImageView(homePath.toExternalForm()), 0.75f));
+        imageMap75.put("blackPersonAdd", setScale(new ImageView(personAddPath.toExternalForm()), 0.75f));
 
         for(ImageView imageView : new ImageView[]{statsImage, usersImage, settingsImage, disconnectImage, homeImage, personAddImage}) {
             ColorAdjust colorAdjust = new ColorAdjust();

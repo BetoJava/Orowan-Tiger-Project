@@ -38,16 +38,13 @@ public class Main extends Application {
 
         H2Database h2 = H2Database.getInstance();
         H2Database.setUserIsEngineer(true);
-        h2.addUser("jb","jb",true);
-        h2.addStandForUser(h2.getUsers().get(0).getId(), "F2");
-
         fillDatabase(h2);
 
 
         // Set up GUI //
         VBox root = new VBox();
         LoginView mainView = new LoginView(root, stage);
-        stage.setTitle("First Project - OROWAN");
+        stage.setTitle("TIGER - OROWAN");
         //stage.getIcons().add(new Image("./icon.png"));
         stage.setScene(mainView);
         stage.show();
@@ -55,19 +52,25 @@ public class Main extends Application {
     }
 
     private void fillDatabase(H2Database h2) {
+        if(h2.loadRawData(1939351,"2").isEmpty()) {
+            h2.writeSensorData(Orowan.getRawData("1939351","2"));
+            ArrayList<OrowanOutputData> outputData2 = Orowan.computeOrowanModel("1939351","2");
+            h2.writeOrowanData(outputData2);
+            ArrayList<ProcessedOutputData> processedOutputData2 = Orowan.getProcessedOutputData(outputData2, "1939351","2");
+            h2.writeProcessedOutputData(processedOutputData2);
+            h2.addStand("2");
+            h2.addStandForUser(1, "2");
+            h2.addStrip(1939351, "2");
 
+        }
 
-
-        h2.writeSensorData(Orowan.getRawData("1939351","2"));
-        h2.writeSensorData(Orowan.getRawData("1939351","3"));
-        ArrayList<OrowanOutputData> outputData2 = Orowan.computeOrowanModel("1939351","2");
-        ArrayList<OrowanOutputData> outputData3 = Orowan.computeOrowanModel("1939351","3");
-        h2.writeOrowanData(outputData2);
-        h2.writeOrowanData(outputData3);
-        ArrayList<ProcessedOutputData> processedOutputData2 = Orowan.getProcessedOutputData(outputData2, "1939351","2");
-        ArrayList<ProcessedOutputData> processedOutputData3 = Orowan.getProcessedOutputData(outputData3, "1939351","3");
-        h2.writeProcessedOutputData(processedOutputData2);
-        h2.writeProcessedOutputData(processedOutputData3);
+        if(h2.loadRawData(1939351,"3").isEmpty()) {
+            h2.writeSensorData(Orowan.getRawData("1939351","3"));
+            ArrayList<OrowanOutputData> outputData3 = Orowan.computeOrowanModel("1939351","3");
+            h2.writeOrowanData(outputData3);
+            ArrayList<ProcessedOutputData> processedOutputData3 = Orowan.getProcessedOutputData(outputData3, "1939351","3");
+            h2.writeProcessedOutputData(processedOutputData3);
+        }
     }
 
     public static Stage getStage() {

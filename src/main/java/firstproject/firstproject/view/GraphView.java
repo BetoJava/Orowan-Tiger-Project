@@ -37,6 +37,10 @@ public class GraphView extends View {
     private Button menuButton;
 
     private HBox hBoxComboBoxes = new HBox();
+    private VBox vBoxStandComboBox = new VBox();
+    private VBox vBoxStripIDComboBox = new VBox();
+    private Label standLabel = new Label("Stand :");
+    private Label stripIDLabel = new Label("Strip ID :");
     private ComboBox<String> standComboBox = new ComboBox<>();
     private ComboBox<String> stripIDComboBox = new ComboBox<>();
 
@@ -73,7 +77,9 @@ public class GraphView extends View {
     }
 
     private void addDataToGraph() {
-
+        if(stripIDComboBox.getValue() == null) {
+            return;
+        }
         int stripID = Integer.parseInt(stripIDComboBox.getValue());
         String stand = standComboBox.getValue();
         seriesFriction.getData().clear();
@@ -155,11 +161,10 @@ public class GraphView extends View {
     }
 
     private void createScene(VBox root) {
-        radioButtonRow.getChildren().add(checkBoxRollSpeed);
-        radioButtonRow.getChildren().add(checkBoxFriction);
-        radioButtonRow.getChildren().add(checkBoxSigma);
-        hBoxComboBoxes.getChildren().add(standComboBox);
-        hBoxComboBoxes.getChildren().add(stripIDComboBox);
+        radioButtonRow.getChildren().addAll(checkBoxRollSpeed, checkBoxFriction, checkBoxSigma);
+        hBoxComboBoxes.getChildren().addAll(vBoxStandComboBox, vBoxStripIDComboBox);
+        vBoxStandComboBox.getChildren().addAll(standLabel, standComboBox);
+        vBoxStripIDComboBox.getChildren().addAll(stripIDLabel, stripIDComboBox);
         root.getChildren().add(titleLabel);
         root.getChildren().add(hBoxComboBoxes);
         root.getChildren().add(computeTimeLabel);
@@ -181,13 +186,20 @@ public class GraphView extends View {
                 "-fx-padding: 32px;");
         menuButton.setStyle("-fx-background-radius: 50;" +
                 "-fx-pref-height: 50;" +
-                "-fx-font-size: 16;");
+                "-fx-font-size: 16;" +
+                "-fx-padding: 0px 16px;");
 
         titleLabel.setGraphic(Assets.imageMap75.get("blackStats"));
         titleLabel.setStyle("-fx-font-size: 30px;" +
                 "-fx-font-family: Times New Roman;");
 
-        hBoxComboBoxes.setStyle("-fx-padding: 4px;");
+        hBoxComboBoxes.setStyle("-fx-padding: 4px;" +
+                "-fx-alignment: center;");
+
+        vBoxStandComboBox.setStyle("-fx-padding: 2px;" +
+                "-fx-alignment: center;");
+        vBoxStripIDComboBox.setStyle("-fx-padding: 2px;" +
+                "-fx-alignment: center;");
 
 
         root.setStyle("-fx-alignment: center;" +
