@@ -47,9 +47,7 @@ public class MenuView extends View {
         manageUsersButton.setContentDisplay(ContentDisplay.LEFT);
         applicationSettingsButton.setGraphic(Assets.imageMap75.get("settings"));
         applicationSettingsButton.setContentDisplay(ContentDisplay.LEFT);
-
-//        disconnectImage = new ImageView(currentDirectory + "/src/main/resources/firstproject/gui/door.png");
-//        disconnectButton.setGraphic(disconnectImage);
+        disconnectButton.setGraphic(Assets.imageMap75.get("door"));
         disconnectButton.setContentDisplay(ContentDisplay.LEFT);
     }
 
@@ -62,7 +60,7 @@ public class MenuView extends View {
     }
 
     private void createScene(VBox root) {
-        customComponents(root);
+
 
         // Add Regions to root children //
         root.getChildren().addAll(graphsBox,usersBox,settingsBox, disconnectBox);

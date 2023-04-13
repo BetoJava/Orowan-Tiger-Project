@@ -8,10 +8,9 @@ public class Stand {
     private boolean isEnable;
     private ArrayList<Strip> stripList = new ArrayList<>();
 
-    public Stand(String standID, ArrayList<Strip> stripList, Boolean enabled) {
+    public Stand(String standID) {
         this.standID = standID;
-        this.stripList = stripList;
-        this.enabled = enabled;
+        this.isEnable = true;
     }
 
     public Stand(String standID, ArrayList<Strip> stripList, boolean isEnable) {

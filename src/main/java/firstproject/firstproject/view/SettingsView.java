@@ -20,12 +20,11 @@ public class SettingsView extends View{
     private Label titleLabel = new Label("Application Settings");
 
     private Label standLabel = new Label("Stand ID: ");
-    private HBox titleBox = new HBox();
+
     private HBox standBox = new HBox();
+    private Button menuButton = new Button("Menu");
 
-    private ToggleButton toggleButton = new ToggleButton();
 
-    private SwitchButton switchButton = new SwitchButton();
     ComboBox<String> comboBox = new ComboBox<>();
 
 
@@ -43,13 +42,13 @@ public class SettingsView extends View{
 
     }
 
-    private void setImage() {
-        titleLabel.setGraphic(Assets.settingsImage);
+
+    private void createButton(){
+        menuButton.setOnAction(e -> stage.setScene(new MenuView(new VBox(), stage)));
     }
 
-
     private void createScene(VBox root) {
-        customComponents(root);
+
         // ComboBox
 
         for(Stand s : Main.getCurrentUser().getStandList()) {
@@ -89,7 +88,7 @@ public class SettingsView extends View{
         menuButton.setGraphic(Assets.imageMap75.get("home"));
         menuButton.setContentDisplay(ContentDisplay.LEFT);
         root.setStyle("-fx-alignment: center");
-        titleBox.setStyle("-fx-alignment: center");
+
         standBox.setStyle("-fx-alignment: center");
         titleLabel.setStyle("-fx-font-size: 60px;" +
                 "-fx-font-family: Times New Roman;");
