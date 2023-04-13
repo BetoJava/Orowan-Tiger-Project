@@ -8,6 +8,7 @@ public class RawData {
 
     private int Lp;
     private int MatID;
+    private String stand;
     private double xTime;
     private double xLoc;
     private double EnThick;
@@ -35,6 +36,34 @@ public class RawData {
 
     }
 
+    public RawData(int lp, int matID, String standId, double xTime, double xLoc, double enThick, double exThick, double enTens, double exTens, double rollForce, double FSlip, double diameter, double rolledLengthForWorkRolls, double youngModulus, double backupRollDia, double rolledLengthForBackupRolls, double mu, double torque, double averageSigma, double inputError, double lubWFlUp, double lubWFlLo, double lubOilFlUp, double lubOilFlLo, double workRollSpeed) {
+        Lp = lp;
+        MatID = matID;
+        this.stand = standId;
+        this.xTime = xTime;
+        this.xLoc = xLoc;
+        EnThick = enThick;
+        ExThick = exThick;
+        EnTens = enTens;
+        ExTens = exTens;
+        RollForce = rollForce;
+        this.FSlip = FSlip;
+        Diameter = diameter;
+        RolledLengthForWorkRolls = rolledLengthForWorkRolls;
+        this.youngModulus = youngModulus;
+        BackupRollDia = backupRollDia;
+        RolledLengthForBackupRolls = rolledLengthForBackupRolls;
+        this.mu = mu;
+        this.torque = torque;
+        this.averageSigma = averageSigma;
+        this.inputError = inputError;
+        LubWFlUp = lubWFlUp;
+        LubWFlLo = lubWFlLo;
+        LubOilFlUp = lubOilFlUp;
+        LubOilFlLo = lubOilFlLo;
+        WorkRollSpeed = workRollSpeed;
+    }
+
     public static ArrayList<RawData> loadRawDataFromFile(String filename) {
         ArrayList<RawData> rawDataList = new ArrayList<>();
         BufferedReader reader = null;
@@ -42,11 +71,13 @@ public class RawData {
             reader = new BufferedReader(new FileReader(filename));
             String line;
 
+            String stand = String.valueOf(filename.charAt(filename.length() - 5));
 
             while ((line = reader.readLine()) != null) {
                 line = line.replace(",", ".");
                 String[] values = line.split("; ");
                 RawData rawData = new RawData();
+                rawData.stand = stand;
                 rawData.Lp = Integer.parseInt(values[0]);
                 rawData.MatID = Integer.parseInt(values[1]);
                 rawData.xTime = Double.parseDouble(values[2]);
@@ -80,6 +111,10 @@ public class RawData {
         }
         return rawDataList;
     }
+
+    public void setStand(String stand){ this.stand = stand; }
+
+    public String getStand(){ return this.stand; }
 
     public int getLp() {
         return Lp;

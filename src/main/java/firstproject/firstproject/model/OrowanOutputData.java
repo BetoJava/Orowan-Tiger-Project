@@ -4,6 +4,7 @@ public class OrowanOutputData {
 
     private double rollSpeed;
 
+    private String stand;
     private int matId;
     private int caseId;
     private String errors;
@@ -22,8 +23,9 @@ public class OrowanOutputData {
 
     }
 
-    public OrowanOutputData(int matId, int caseId, String errors, double offsetYield, double friction, double rollingTorque, double sigmaMoy,
+    public OrowanOutputData(String stand, int matId, int caseId, String errors, double offsetYield, double friction, double rollingTorque, double sigmaMoy,
                             double sigmaIni, double sigmaOut, double sigmaMax, double forceError, double slipError, boolean hasConverged) {
+        this.stand = stand;
         this.matId = matId;
         this.caseId = caseId;
         this.errors = errors;
@@ -38,6 +40,10 @@ public class OrowanOutputData {
         this.slipError = slipError;
         this.hasConverged = hasConverged;
     }
+
+    public String getStandID(){ return stand; }
+
+    public void setStand(String stand){ this.stand = stand; }
 
     public int getCaseId() {
         return caseId;

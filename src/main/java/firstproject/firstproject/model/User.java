@@ -27,6 +27,14 @@ public class User {
         this(id, identifier, password, WORKER);
     }
 
+    public boolean hasStand(String stand){
+        for (Stand s : standList)
+            if(s.getStandID() == stand)
+                return true;
+
+        return false;
+    }
+
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }

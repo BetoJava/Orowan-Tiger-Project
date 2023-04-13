@@ -45,9 +45,10 @@ public class H2Database {
         Statement stmt = connection.createStatement();
 
         String sql = "CREATE TABLE IF NOT EXISTS sensor_data " +
-                "(lp INT NOT NULL, " +
+                "(stand_id VARCHAR(255) NOT NULL," +
+                " lp INT NOT NULL, " +
                 " mat_id INT NOT NULL, " +
-                " x_time TIMESTAMP NOT NULL, " +
+                " x_time FLOAT NOT NULL, " +
                 " x_loc FLOAT NOT NULL, " +
                 " en_thick FLOAT NOT NULL, " +
                 " ex_thick FLOAT NOT NULL, " +
@@ -72,7 +73,8 @@ public class H2Database {
         stmt.executeUpdate(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS orowan_data " +
-                "(mat_id INT NOT NULL, " +
+                "(stand_id VARCHAR(255) NOT NULL," +
+                " mat_id INT NOT NULL, " +
                 " case_id INT NOT NULL, " +
                 " errors VARCHAR(255) NOT NULL, " +
                 " offset_yield FLOAT NOT NULL, " +
@@ -88,7 +90,8 @@ public class H2Database {
         stmt.executeUpdate(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS processed_data" +
-                " (mat_id INT NOT NULL," +
+                " (stand_id VARCHAR(255) NOT NULL," +
+                "  mat_id INT NOT NULL," +
                 "  friction FLOAT NOT NULL," +
                 "  sigma FLOAT NOT NULL," +
                 "  rollingSpeed FLOAT NOT NULL)";
@@ -102,8 +105,8 @@ public class H2Database {
         stmt.executeUpdate(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS strip_stand (" +
-                "mat_id INT PRIMARY KEY," +
-                "stand_id VARCHAR(255))";
+                "stand_id VARCHAR(255)," +
+                "mat_id INT PRIMARY KEY)";
         stmt.executeUpdate(sql);
 
         sql = "CREATE TABLE IF NOT EXISTS users_stands " +
@@ -125,10 +128,10 @@ public class H2Database {
         ArrayList<OrowanOutputData> data = new ArrayList<>();
 
         //Check access rights
-        if(!isUserEngineer() && !H2Database.thisUser.getStandList().contains(standID))
+        if(!isUserEngineer() && !H2Database.thisUser.hasStand(stand))
             return data;
 
-        String query = "SELECT * FROM orowan_data WHERE mat_id = ?";
+        String query = "SELECT * FROM orowan_data WHERE stand_id = ? AND mat_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
             pstmt.setString(1, stand);
@@ -151,12 +154,95 @@ public class H2Database {
                 double slipError = rs.getDouble("slip_error_pct");
                 boolean hasConverged = rs.getBoolean("has_converged");
 
-                OrowanOutputData row = new OrowanOutputData(matId, caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni,
+                OrowanOutputData row = new OrowanOutputData(stand, matId, caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni,
                         sigmaOut, sigmaMax, forceError, slipError, hasConverged);
                 data.add(row);
             }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
 
-            pstmt.close();
+        return data;
+    }
+
+    public ArrayList<RawData> loadRawData(int stripID, String stand) {
+        ArrayList<RawData> data = new ArrayList<>();
+
+        //Check access rights
+        if(!isUserEngineer() && !H2Database.thisUser.hasStand(stand))
+            return data;
+
+        String query = "SELECT * FROM sensor_data WHERE stand_id = ? AND mat_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, stand);
+            pstmt.setInt(2, stripID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int matId = rs.getInt("mat_id");
+                int lp = rs.getInt("lp");
+                float xTime = rs.getFloat("x_time");
+                float xLoc = rs.getFloat("x_loc");
+                float enThick = rs.getFloat("en_thick");
+                float exThick = rs.getFloat("ex_thick");
+                float enTens = rs.getFloat("en_tens");
+                float exTens = rs.getFloat("ex_tens");
+                float rollForce = rs.getFloat("roll_force");
+                float fSlip = rs.getFloat("f_slip");
+                float diameter = rs.getFloat("diameter");
+                float rolledLengthWr = rs.getFloat("rolled_length_wr");
+                float youngModulus = rs.getFloat("young_modulus");
+                float backupRollDia = rs.getFloat("backup_roll_dia");
+                float rolledLengthBr = rs.getFloat("rolled_length_br");
+                float mu = rs.getFloat("mu");
+                float torque = rs.getFloat("torque");
+                float avgSigma = rs.getFloat("avg_sigma");
+                float inputError = rs.getFloat("input_error");
+                float lubWflUp = rs.getFloat("lub_wfl_up");
+                float lubWflLo = rs.getFloat("lub_wfl_lo");
+                float lubOilFlUp = rs.getFloat("lub_oil_fl_up");
+                float lubOilFlLo = rs.getFloat("lub_oil_fl_lo");
+                float wrSpeed = rs.getFloat("wr_speed");
+
+                RawData row = new RawData(lp, matId, stand, xTime, xLoc, enThick, exThick, enTens, exTens, rollForce, fSlip, diameter,
+                        rolledLengthWr, youngModulus, backupRollDia, rolledLengthBr, mu, torque, avgSigma, inputError, lubWflUp,
+                        lubWflLo, lubOilFlUp, lubOilFlLo, wrSpeed);
+                data.add(row);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return data;
+    }
+
+    public ArrayList<ProcessedOutputData> loadProcessedOutputData(int stripID, String stand) {
+        ArrayList<ProcessedOutputData> data = new ArrayList<>();
+
+        //Check access rights
+        if(!isUserEngineer() && !H2Database.thisUser.hasStand(stand))
+            return data;
+
+        String query = "SELECT * FROM processed_data WHERE stand_id = ? AND mat_id = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, stand);
+            pstmt.setInt(2, stripID);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                double friction = rs.getDouble("friction");
+                double sigma = rs.getDouble("sigma");
+                double rollingSpeed = rs.getDouble("rollingSpeed");
+
+                ProcessedOutputData row = new ProcessedOutputData(rollingSpeed, sigma, friction , stand, stripID);
+                data.add(row);
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
         }
 
         return data;
@@ -165,23 +251,24 @@ public class H2Database {
     public void writeOrowanData(ArrayList<OrowanOutputData> data){
 
         try {
-            PreparedStatement stmt = connection.prepareStatement("INSERT INTO orowan_data (mat_id, case_id, errors, offset_yield, friction, rolling_torque, sigma_moy, sigma_ini, sigma_out, sigma_max, force_error_pct, slip_error_pct, has_converged) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO orowan_data (stand_id, mat_id, case_id, errors, offset_yield, friction, rolling_torque, sigma_moy, sigma_ini, sigma_out, sigma_max, force_error_pct, slip_error_pct, has_converged) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             for (OrowanOutputData row : data) {
-                stmt.setInt(1, row.getMatID());
-                stmt.setInt(2, row.getCaseId());
-                stmt.setString(3, row.getErrors());
-                stmt.setDouble(4, row.getOffsetYield());
-                stmt.setDouble(5, row.getFriction());
-                stmt.setDouble(6, row.getRollingTorque());
-                stmt.setDouble(7, row.getSigmaMoy());
-                stmt.setDouble(8, row.getSigmaIni());
-                stmt.setDouble(9, row.getSigmaOut());
-                stmt.setDouble(10, row.getSigmaMax());
-                stmt.setDouble(11, row.getForceError());
-                stmt.setDouble(12, row.getSlipError());
-                stmt.setBoolean(13, row.isHasConverged());
+                stmt.setString(1, row.getStandID());
+                stmt.setInt(2, row.getMatID());
+                stmt.setInt(3, row.getCaseId());
+                stmt.setString(4, row.getErrors());
+                stmt.setDouble(5, row.getOffsetYield());
+                stmt.setDouble(6, row.getFriction());
+                stmt.setDouble(7, row.getRollingTorque());
+                stmt.setDouble(8, row.getSigmaMoy());
+                stmt.setDouble(9, row.getSigmaIni());
+                stmt.setDouble(10, row.getSigmaOut());
+                stmt.setDouble(11, row.getSigmaMax());
+                stmt.setDouble(12, row.getForceError());
+                stmt.setDouble(13, row.getSlipError());
+                stmt.setBoolean(14, row.isHasConverged());
                 stmt.executeUpdate();
             }
 
@@ -196,12 +283,12 @@ public class H2Database {
         try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO sensor_data " +
                 "(lp, mat_id, x_time, x_loc, en_thick, ex_thick, en_tens, ex_tens, roll_force, f_slip, diameter, " +
                 "rolled_length_wr, young_modulus, backup_roll_dia, rolled_length_br, mu, torque, avg_sigma, " +
-                "input_error, lub_wfl_up, lub_wfl_lo, lub_oil_fl_up, lub_oil_fl_lo, wr_speed) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
+                "input_error, lub_wfl_up, lub_wfl_lo, lub_oil_fl_up, lub_oil_fl_lo, wr_speed, stand_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")) {
             for (RawData data : dataList) {
                 stmt.setInt(1, data.getLp());
                 stmt.setInt(2, data.getMatID());
-                stmt.setTimestamp(3, new Timestamp((long) (data.getxTime() * 1000))); // assuming xTime is in seconds
+                stmt.setDouble(3, data.getxTime()); // assuming xTime is in seconds
                 stmt.setDouble(4, data.getxLoc());
                 stmt.setDouble(5, data.getEnThick());
                 stmt.setDouble(6, data.getExThick());
@@ -223,6 +310,7 @@ public class H2Database {
                 stmt.setDouble(22, data.getLubOilFlUp());
                 stmt.setDouble(23, data.getLubOilFlLo());
                 stmt.setDouble(24, data.getWorkRollSpeed());
+                stmt.setString(25, data.getStand());
                 stmt.executeUpdate();
             }
 
@@ -528,7 +616,5 @@ public class H2Database {
         return strips;
     }
 
-    public static void setUserIsEngineer(boolean userIsEngineer) {
-        H2Database.thisUser.setRole( userIsEngineer ? User.ENGINEER : User.WORKER);
-    }
+    public static void setUserIsEngineer(boolean userIsEngineer) { H2Database.thisUser.setRole( userIsEngineer ? User.ENGINEER : User.WORKER); }
 }
