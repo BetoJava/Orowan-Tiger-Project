@@ -14,6 +14,8 @@ public class User {
 
     private ArrayList<Stand> standList = new ArrayList<>();
 
+    public User(){}
+
     public User(int id, String identifier, String password, String role) {
         this.id = id;
         this.identifier = identifier;
@@ -56,4 +58,8 @@ public class User {
     public ArrayList<Stand> getStandList() {
         return standList;
     }
+
+    public void setStandList(ArrayList<Stand> standList){ this.standList = standList; }
+
+    public boolean isEngineer(){ return role == User.ENGINEER; }
 }
