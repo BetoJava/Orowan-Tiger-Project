@@ -19,9 +19,7 @@ public class H2Database {
     private static String dbPassword = "";
     private static Connection connection;
 
-    private static boolean userIsEngineer = false;
-    private static int userId = -1;
-    private static ArrayList<Stand> userStands;
+    private static final User thisUser = new User();
 
     public static H2Database getInstance(){
         if(instance == null)
@@ -124,7 +122,7 @@ public class H2Database {
         ArrayList<OrowanOutputData> data = new ArrayList<>();
 
         //Check access rights
-        if(!H2Database.userStands.contains(standID))
+        if(!isUserEngineer() && !H2Database.thisUser.getStandList().contains(standID))
             return data;
 
         String query = "SELECT * FROM orowan_data WHERE stand_id = ?";
@@ -233,16 +231,16 @@ public class H2Database {
 
     //----------------------------USER MANAGEMENT----------------------------------
     public ArrayList<Stand> getUserStands(){
-        return H2Database.userStands;
+        return H2Database.thisUser.getStandList();
     }
 
-    public boolean isUserEngineer(){ return H2Database.userIsEngineer; }
+    public static boolean isUserEngineer(){ return H2Database.thisUser.isEngineer(); }
 
     public boolean loginUser(String username, String password){
         boolean loginSuccessful = false;
 
         try {
-            String sql = "SELECT id, user_type FROM users WHERE username=? AND password=?";
+            String sql = "SELECT id, isEngineer FROM users WHERE username=? AND password=?";
             PreparedStatement pstmt = connection.prepareStatement(sql);
 
             pstmt.setString(1, username);
@@ -251,8 +249,9 @@ public class H2Database {
             ResultSet rs = pstmt.executeQuery();
 
             if (rs.next()) {
-                H2Database.userIsEngineer = rs.getBoolean("isEngineer");
-                H2Database.userId = rs.getInt("id");
+                H2Database.thisUser.setIdentifier(username);
+                H2Database.setUserIsEngineer(rs.getBoolean("isEngineer"));
+                H2Database.thisUser.setId( rs.getInt("id") );
                 refreshUserStands();
 
                 loginSuccessful = true;
@@ -267,25 +266,23 @@ public class H2Database {
         return loginSuccessful;
     }
 
-    public void refreshUserStands(){
-        H2Database.userStands = loadUserStands();
-    }
+    public void refreshUserStands(){ H2Database.thisUser.setStandList(loadUserStands()); }
 
     private ArrayList<Stand> loadUserStands(){
 
         ArrayList<Stand> stands;
 
-        if (H2Database.userIsEngineer) {
+        if (H2Database.isUserEngineer()) {
             stands = getAllStands();
         } else {
-            stands = getUserStands(userId);
+            stands = getUserStands(H2Database.thisUser.getId());
         }
 
         return stands;
     }
 
     public void addUser(String username, String password, boolean isEngineer) {
-        if (!H2Database.userIsEngineer)
+        if (!H2Database.isUserEngineer())
             return;
 
         try {
@@ -303,7 +300,7 @@ public class H2Database {
     }
 
     public void removeUser(int userId) {
-        if (!H2Database.userIsEngineer)
+        if (!H2Database.isUserEngineer())
             return;
 
         try {
@@ -326,7 +323,7 @@ public class H2Database {
     }
 
     public void addStandForUser(int userId, String standId) {
-        if (!H2Database.userIsEngineer)
+        if (!H2Database.isUserEngineer())
             return;
 
         try {
@@ -356,7 +353,7 @@ public class H2Database {
     }
 
     public void removeStandForUser(int userId, String standId) {
-        if (!H2Database.userIsEngineer)
+        if (!H2Database.isUserEngineer())
             return;
 
         try {
@@ -459,7 +456,7 @@ public class H2Database {
     public ArrayList<Stand> getUserStands(int userID){
         ArrayList<Stand> stands = new ArrayList<>();
 
-        if(!isUserEngineer() && !(H2Database.userId == userID))
+        if(!isUserEngineer() && !(H2Database.thisUser.getId() == userID))
             return stands;
 
         String sql = "SELECT stand_id, enabled FROM stands " +
@@ -508,6 +505,6 @@ public class H2Database {
     }
 
     public static void setUserIsEngineer(boolean userIsEngineer) {
-        H2Database.userIsEngineer = userIsEngineer;
+        H2Database.thisUser.setRole( userIsEngineer ? User.ENGINEER : User.WORKER);
     }
 }
