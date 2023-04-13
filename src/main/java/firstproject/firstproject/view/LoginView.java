@@ -1,5 +1,8 @@
 package firstproject.firstproject.view;
 
+import firstproject.firstproject.Main;
+import firstproject.firstproject.controller.H2Database;
+import firstproject.firstproject.model.User;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -37,7 +40,14 @@ public class LoginView extends View {
     }
 
     private void createButton() {
-        connectionButton.setOnAction(e -> stage.setScene(new MenuView(new VBox(), stage)));
+        connectionButton.setOnAction(e -> {
+            H2Database h2 = H2Database.getInstance();
+            User currentUser = Main.getCurrentUser();
+            if(h2.loginUser(currentUser.getIdentifier(), currentUser.getPassword())) {
+                stage.setScene(new MenuView(new VBox(), stage));
+            }
+
+        });
     }
 
     private void createScene(VBox root) {

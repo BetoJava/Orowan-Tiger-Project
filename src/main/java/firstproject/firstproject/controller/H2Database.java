@@ -506,4 +506,8 @@ public class H2Database {
 
         return strips;
     }
+
+    public static void setUserIsEngineer(boolean userIsEngineer) {
+        H2Database.userIsEngineer = userIsEngineer;
+    }
 }

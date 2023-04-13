@@ -1,6 +1,7 @@
 package firstproject.firstproject;
 
 import firstproject.firstproject.assets.Assets;
+import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Stand;
 import firstproject.firstproject.model.User;
 import firstproject.firstproject.view.LoginView;
@@ -31,9 +32,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         this.stage = stage;
-        Assets.loadAssets(); // Load image assets
-        setCurrentUser(new User(0, "red","ihi"));
-        getCurrentUser().getStandList().add(new Stand("F2"));
+        Assets.loadAssets();
+
+        H2Database h2 = H2Database.getInstance();
+        H2Database.setUserIsEngineer(true);
+        h2.addUser("jb","jb",true);
+        h2.addStandForUser(h2.getUsers().get(0).getId(), "F2");
+
+
         // Set up GUI //
         VBox root = new VBox();
         LoginView mainView = new LoginView(root, stage);
