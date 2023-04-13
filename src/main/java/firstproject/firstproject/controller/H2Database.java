@@ -3,11 +3,7 @@ package firstproject.firstproject.controller;
 import java.sql.*;
 import java.util.ArrayList;
 
-import firstproject.firstproject.model.OrowanOutputData;
-import firstproject.firstproject.model.RawData;
-import firstproject.firstproject.model.User;
-import firstproject.firstproject.model.Stand;
-import firstproject.firstproject.model.Strip;
+import firstproject.firstproject.model.*;
 
 public class H2Database {
 
@@ -91,6 +87,13 @@ public class H2Database {
                 " has_converged BOOLEAN NOT NULL)";
         stmt.executeUpdate(sql);
 
+        sql = "CREATE TABLE IF NOT EXISTS processed_data" +
+                " (mat_id INT NOT NULL," +
+                "  friction FLOAT NOT NULL," +
+                "  sigma FLOAT NOT NULL," +
+                "  rollingSpeed FLOAT NOT NULL)";
+        stmt.executeUpdate(sql);
+
         sql = "CREATE TABLE IF NOT EXISTS users " +
                 "(id INT AUTO_INCREMENT PRIMARY KEY," +
                 " username VARCHAR(255) NOT NULL, " +
@@ -118,17 +121,17 @@ public class H2Database {
 
     //---------------------------DATA MANAGEMENT--------------------------------
 
-    public ArrayList<OrowanOutputData> loadOrowanData(int standID) throws SQLException {
+    public ArrayList<OrowanOutputData> loadOrowanData(int stripid) throws SQLException {
         ArrayList<OrowanOutputData> data = new ArrayList<>();
 
         //Check access rights
         if(!isUserEngineer() && !H2Database.thisUser.getStandList().contains(standID))
             return data;
 
-        String query = "SELECT * FROM orowan_data WHERE stand_id = ?";
+        String query = "SELECT * FROM orowan_data WHERE mat_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, standID);
+            pstmt.setInt(1, stripid);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -228,6 +231,8 @@ public class H2Database {
         }
 
     }
+
+    public ArrayList<ProcessedOutputData> loadProcessedData(int standID)
 
     //----------------------------USER MANAGEMENT----------------------------------
     public ArrayList<Stand> getUserStands(){
