@@ -27,7 +27,7 @@ public class Orowan {
             ArrayList<OrowanInputData> inputDataList = convertRawDataToInputData(getRawData(stripID, stand), stripID, stand);
             saveInputDataToTxt(inputDataList, fileName + "/Model/", stripID, stand);
             lastComputeTime = executeOrowan(fileName + "/Model/", stripID, stand);
-            ArrayList<OrowanOutputData> outputDataList = loadOutputDataFromFile(fileName + "/Model/", stripID, stand);
+            ArrayList<OrowanOutputData> outputDataList = loadOutputDataFromFile(fileName + "/Model/", Integer.parseInt(stripID), stand);
             // Adding Roll speed information to OrowanOutputData
             for(int i = 0; i < inputDataList.size(); i++) {
                 outputDataList.get(i).setRollSpeed(inputDataList.get(i).getRollSpeed());
@@ -63,7 +63,7 @@ public class Orowan {
                 avgRollingSpeed /= 5d;
                 avgSigma /= 5d;
 
-                processedOutputData.add(new ProcessedOutputData(avgRollingSpeed, avgSigma, avgFriction, stand, stripID));
+                processedOutputData.add(new ProcessedOutputData(avgRollingSpeed, avgSigma, avgFriction, stand, Integer.parseInt(stripID)));
                 k = 0;
                 avgFriction = 0;
                 avgRollingSpeed = 0;
@@ -170,7 +170,7 @@ public class Orowan {
      * Charge les données de sortie du programme Orowan.exe et revoie la liste d'objets OrowanOutputData
      * correspondante.
      */
-    public static ArrayList<OrowanOutputData> loadOutputDataFromFile(String filename, String stripID, String stand) throws IOException {
+    public static ArrayList<OrowanOutputData> loadOutputDataFromFile(String filename, int stripID, String stand) throws IOException {
         ArrayList<OrowanOutputData> dataList = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new FileReader(filename + "output_" + stripID + "_" + stand + ".txt"));
 
@@ -179,7 +179,7 @@ public class Orowan {
         reader.readLine(); // skip first line (headers)
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split("\\t");
-            int matId = Integer.parseInt(stripID);
+            int matId = stripID;
             int caseId = Integer.parseInt(parts[0]);
             String errors = parts[1];
             double offsetYield = Double.parseDouble(parts[2]);
@@ -192,7 +192,7 @@ public class Orowan {
             double forceError = Double.parseDouble(parts[9]);
             double slipError = Double.parseDouble(parts[10]);
             boolean hasConverged = parts[11].equals("YES");
-            dataList.add(new OrowanOutputData(matId, caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni, sigmaOut, sigmaMax,
+            dataList.add(new OrowanOutputData(stand, matId, caseId, errors, offsetYield, friction, rollingTorque, sigmaMoy, sigmaIni, sigmaOut, sigmaMax,
                     forceError, slipError, hasConverged));
         }
 

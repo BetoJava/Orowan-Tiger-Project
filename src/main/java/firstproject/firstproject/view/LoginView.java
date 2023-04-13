@@ -7,13 +7,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class LoginView extends View {
 
     private Label titleLabel = new Label("OROWAN");
+
+    private VBox fieldBox = new VBox();
 
     private HBox identifierBox = new HBox();
     private Label identifierLabel = new Label("User ID : ");
@@ -23,7 +27,7 @@ public class LoginView extends View {
     private Label passwordLabel = new Label("Password : ");
     private PasswordField passwordTextField = new PasswordField();
 
-    private Button connectionButton = new Button("LOGIN");
+    private Button connectionButton = new Button("Login");
 
     /**
      * Constructeur de la main view
@@ -55,8 +59,7 @@ public class LoginView extends View {
 
         // Add Regions to root children //
         root.getChildren().add(titleLabel);
-        root.getChildren().add(identifierBox);
-        root.getChildren().add(passwordBox);
+        root.getChildren().add(fieldBox);
         root.getChildren().add(connectionButton);
 
         // Add Components to Regions children //

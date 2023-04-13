@@ -4,6 +4,7 @@ import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.*;
 import firstproject.firstproject.view.LoginView;
+import firstproject.firstproject.view.MenuView;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -46,7 +47,7 @@ public class Main extends Application {
         // Set up GUI //
         VBox root = new VBox();
         LoginView mainView = new LoginView(root, stage);
-        stage.setTitle("FIRST Project");
+        stage.setTitle("First Project - OROWAN");
         //stage.getIcons().add(new Image("./icon.png"));
         stage.setScene(mainView);
         stage.show();
@@ -57,16 +58,16 @@ public class Main extends Application {
 
 
 
-        h2.writeSensorData(Orowan.getRawData("1939351","F2"));
-        h2.writeSensorData(Orowan.getRawData("1939351","F3"));
-        ArrayList<OrowanOutputData> outputData2 = Orowan.computeOrowanModel("1939351","F2");
-        ArrayList<OrowanOutputData> outputData3 = Orowan.computeOrowanModel("1939351","F3");
+        h2.writeSensorData(Orowan.getRawData("1939351","2"));
+        h2.writeSensorData(Orowan.getRawData("1939351","3"));
+        ArrayList<OrowanOutputData> outputData2 = Orowan.computeOrowanModel("1939351","2");
+        ArrayList<OrowanOutputData> outputData3 = Orowan.computeOrowanModel("1939351","3");
         h2.writeOrowanData(outputData2);
         h2.writeOrowanData(outputData3);
-        ArrayList<ProcessedOutputData> processedOutputData2 = Orowan.getProcessedOutputData(outputData2, "1939351","F2");
-        ArrayList<ProcessedOutputData> processedOutputData3 = Orowan.getProcessedOutputData(outputData3, "1939351","F2");
-        //h2.writeProcessedOutputData(processedOutputData2);
-        //h2.writeProcessedOutputData(processedOutputData3);
+        ArrayList<ProcessedOutputData> processedOutputData2 = Orowan.getProcessedOutputData(outputData2, "1939351","2");
+        ArrayList<ProcessedOutputData> processedOutputData3 = Orowan.getProcessedOutputData(outputData3, "1939351","3");
+        h2.writeProcessedOutputData(processedOutputData2);
+        h2.writeProcessedOutputData(processedOutputData3);
     }
 
     public static Stage getStage() {

@@ -121,7 +121,7 @@ public class H2Database {
 
     //---------------------------DATA MANAGEMENT--------------------------------
 
-    public ArrayList<OrowanOutputData> loadOrowanData(int stripid) throws SQLException {
+    public ArrayList<OrowanOutputData> loadOrowanData(int stripID, String stand) {
         ArrayList<OrowanOutputData> data = new ArrayList<>();
 
         //Check access rights
@@ -131,7 +131,8 @@ public class H2Database {
         String query = "SELECT * FROM orowan_data WHERE mat_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, stripid);
+            pstmt.setString(1, stand);
+            pstmt.setInt(2, stripID);
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -232,7 +233,25 @@ public class H2Database {
 
     }
 
-    public ArrayList<ProcessedOutputData> loadProcessedData(int standID)
+    public void writeProcessedOutputData(ArrayList<ProcessedOutputData> data){
+
+        try {
+            PreparedStatement stmt = connection.prepareStatement("INSERT INTO processed_data (stand_id, mat_id, friction, sigma, rollingSpeed) " +
+                    "VALUES (?, ?, ?, ?, ?)");
+
+            for (ProcessedOutputData row : data) {
+                stmt.setString(1, row.getStand());
+                stmt.setInt(2, row.getStripID());
+                stmt.setDouble(3, row.getFriction());
+                stmt.setDouble(4, row.getSigma());
+                stmt.setDouble(5, row.getRollingSpeed());
+                stmt.executeUpdate();
+            }
+            stmt.close();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     //----------------------------USER MANAGEMENT----------------------------------
     public ArrayList<Stand> getUserStands(){

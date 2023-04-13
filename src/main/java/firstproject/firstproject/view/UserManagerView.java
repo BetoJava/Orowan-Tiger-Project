@@ -18,6 +18,7 @@ public class UserManagerView extends View {
 
     private HBox titleBox = new HBox();
     private HBox addBox = new HBox();
+    private VBox tableBox = new VBox();
     private Button menuButton = new Button("Menu");
     private Button addUserButton = new Button("ADD USER");
 
@@ -34,16 +35,8 @@ public class UserManagerView extends View {
     public UserManagerView(VBox root, Stage primaryStage) {
         super(root, primaryStage);
         customComponents(root);
-        setImage();
         createButton();
         createScene(root);
-    }
-
-    private void setImage() {
-        titleLabel.setGraphic(Assets.imageMap75.get("users"));
-        addUserButton.setGraphic(Assets.imageMap75.get("personAdd"));
-
-
     }
 
     private void createButton(){
@@ -199,16 +192,12 @@ public class UserManagerView extends View {
         });
 
 
-        // Add Regions to root children //
-        root.getChildren().addAll(titleBox,addBox, table);
-
+        tableBox.getChildren().add(table);
         // Add Components to Regions children //
         titleBox.getChildren().add(titleLabel);
-        addBox.getChildren().addAll(addUserButton);
-        root.getChildren().add(menuButton);
+        root.getChildren().addAll(titleBox, addUserButton, tableBox, menuButton);
+
     }
-
-
 
 
     private void customComponents(VBox root) {
@@ -217,7 +206,9 @@ public class UserManagerView extends View {
         root.setStyle("-fx-alignment: center");
         titleBox.setStyle("-fx-alignment: center");
         titleLabel.setStyle("-fx-font-size: 60px;" +
-                "-fx-font-family: Times New Roman;");
+                "-fx-font-family: Times New Roman;" +
+                "-fx-text-fill: white;" +
+                "-fx-padding: 16px;");
 
 
     }

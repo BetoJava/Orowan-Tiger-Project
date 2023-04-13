@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class RawData {
+
     private int Lp;
     private int MatID;
     private double xTime;

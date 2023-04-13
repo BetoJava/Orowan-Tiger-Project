@@ -25,7 +25,7 @@ public class SettingsView extends View{
     private Button menuButton = new Button("Menu");
 
 
-    ComboBox<String> comboBox = new ComboBox<>();
+    private ComboBox<String> comboBox = new ComboBox<>();
 
 
     /**
@@ -91,7 +91,16 @@ public class SettingsView extends View{
 
         standBox.setStyle("-fx-alignment: center");
         titleLabel.setStyle("-fx-font-size: 60px;" +
-                "-fx-font-family: Times New Roman;");
+                "-fx-font-family: Times New Roman;" +
+                "-fx-text-fill: white;" +
+                "-fx-padding: 48px;");
+
+        root.setStyle("-fx-alignment: center;" +
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
+                "-fx-background-color: #222222;");
+
+
+
 
     }
 

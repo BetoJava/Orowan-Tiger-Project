@@ -1,5 +1,6 @@
 package firstproject.firstproject.assets;
 
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
@@ -26,6 +27,17 @@ public class Assets {
         ImageView disconnectImage = new ImageView(doorPath.toExternalForm());
         ImageView homeImage = new ImageView(homePath.toExternalForm());
         ImageView personAddImage = new ImageView(personAddPath.toExternalForm());
+
+        imageMap75.put("blackStats", setScale(new ImageView(statsPath.toExternalForm()), 0.75f));
+        imageMap75.put("blackHome", setScale(new ImageView(homePath.toExternalForm()), 0.75f));
+
+        for(ImageView imageView : new ImageView[]{statsImage, usersImage, settingsImage, disconnectImage, homeImage, personAddImage}) {
+            ColorAdjust colorAdjust = new ColorAdjust();
+            colorAdjust.setBrightness(1.0);
+            colorAdjust.setSaturation(1.0);
+            colorAdjust.setHue(0.0);
+            imageView.setEffect(colorAdjust);
+        }
 
         imageMap75.put("stats", setScale(statsImage, 0.75f));
         imageMap75.put("users", setScale(usersImage, 0.75f));

@@ -1,18 +1,17 @@
 package firstproject.firstproject.view;
 
+import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Orowan;
-import firstproject.firstproject.model.OrowanOutputData;
 import firstproject.firstproject.model.ProcessedOutputData;
+import firstproject.firstproject.model.Stand;
+import firstproject.firstproject.model.Strip;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,6 +36,10 @@ public class GraphView extends View {
     private CheckBox checkBoxSigma;
     private Button menuButton;
 
+    private HBox hBoxComboBoxes = new HBox();
+    private ComboBox<String> standComboBox = new ComboBox<>();
+    private ComboBox<String> stripIDComboBox = new ComboBox<>();
+
     /**
      * Constructeur de la View graphique
      *
@@ -47,24 +50,38 @@ public class GraphView extends View {
         super(root, primaryStage);
 
         createButtons(root);
-        H2Database h2 = H2Database.getInstance();
-        ArrayList<OrowanOutputData> outputData2;
-        ArrayList<OrowanOutputData> outputData3;
-        try {
-            outputData2 = h2.loadOrowanData(2);
-            outputData3 = h2.loadOrowanData(3);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        createComboBoxes();
         createGraph();
-        addDataToGraph(processedOutputData);
         createScene(root);
         customComponents(root);
     }
 
-    private void addDataToGraph(ArrayList<ProcessedOutputData> outputData) {
-        for(int i = 0; i < outputData.size(); i++) {
-            ProcessedOutputData data = outputData.get(i);
+    private void createComboBoxes() {
+        for(Stand s : Main.getCurrentUser().getStandList()) {
+            standComboBox.getItems().add(s.getStandID());
+            for(Strip strip : s.getStripList()) {
+                stripIDComboBox.getItems().add(String.valueOf(strip.getStripID()));
+            }
+        }
+
+        standComboBox.setOnAction(e -> addDataToGraph());
+        stripIDComboBox.setOnAction(e -> addDataToGraph());
+    }
+
+    private ArrayList<ProcessedOutputData> getProcessedOutputData(int stripID, String stand) {
+        return H2Database.getInstance().loadProcessedOutputData(stripID, stand);
+    }
+
+    private void addDataToGraph() {
+
+        int stripID = Integer.parseInt(stripIDComboBox.getValue());
+        String stand = standComboBox.getValue();
+        seriesFriction.getData().clear();
+        seriesRollSpeed.getData().clear();
+        seriesSigma.getData().clear();
+        ArrayList<ProcessedOutputData> processedOutputData = getProcessedOutputData(stripID, stand);
+        for(int i = 0; i < processedOutputData.size(); i++) {
+            ProcessedOutputData data = processedOutputData.get(i);
             seriesFriction.getData().add(new XYChart.Data<>(i* ProcessedOutputData.xTimeMS, data.getFriction()));
             seriesRollSpeed.getData().add(new XYChart.Data<>(i*ProcessedOutputData.xTimeMS, data.getRollingSpeed()));
             seriesSigma.getData().add(new XYChart.Data<>(i*ProcessedOutputData.xTimeMS, data.getSigma()));
@@ -141,7 +158,10 @@ public class GraphView extends View {
         radioButtonRow.getChildren().add(checkBoxRollSpeed);
         radioButtonRow.getChildren().add(checkBoxFriction);
         radioButtonRow.getChildren().add(checkBoxSigma);
+        hBoxComboBoxes.getChildren().add(standComboBox);
+        hBoxComboBoxes.getChildren().add(stripIDComboBox);
         root.getChildren().add(titleLabel);
+        root.getChildren().add(hBoxComboBoxes);
         root.getChildren().add(computeTimeLabel);
         root.getChildren().add(lineChart);
         root.getChildren().add(radioButtonRow);
@@ -156,12 +176,23 @@ public class GraphView extends View {
     }
 
     private void customComponents(VBox root) {
-        menuButton.setGraphic(Assets.imageMap75.get("home"));
-        root.setStyle("-fx-alignment: center");
-        radioButtonRow.setStyle("-fx-alignment: center");
-        titleLabel.setGraphic(Assets.imageMap75.get("stats"));
+        menuButton.setGraphic(Assets.imageMap75.get("blackHome"));
+        radioButtonRow.setStyle("-fx-alignment: center;" +
+                "-fx-padding: 32px;");
+        menuButton.setStyle("-fx-background-radius: 50;" +
+                "-fx-pref-height: 50;" +
+                "-fx-font-size: 16;");
+
+        titleLabel.setGraphic(Assets.imageMap75.get("blackStats"));
         titleLabel.setStyle("-fx-font-size: 30px;" +
                 "-fx-font-family: Times New Roman;");
+
+        hBoxComboBoxes.setStyle("-fx-padding: 4px;");
+
+
+        root.setStyle("-fx-alignment: center;" +
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;");
+
     }
 
 }

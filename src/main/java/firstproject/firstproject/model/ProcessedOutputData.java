@@ -8,9 +8,9 @@ public class ProcessedOutputData {
     private double sigma;
     private double friction;
     private String stand;
-    private String stripID;
+    private int stripID;
 
-    public ProcessedOutputData(double rollingSpeed, double sigma, double friction, String stand, String stripID) {
+    public ProcessedOutputData(double rollingSpeed, double sigma, double friction, String stand, int stripID) {
         this.rollingSpeed = rollingSpeed;
         this.sigma = sigma;
         this.friction = friction;
@@ -34,7 +34,7 @@ public class ProcessedOutputData {
         return stand;
     }
 
-    public String getStripID() {
+    public int getStripID() {
         return stripID;
     }
 }

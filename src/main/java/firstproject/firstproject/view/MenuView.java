@@ -5,6 +5,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -61,9 +62,8 @@ public class MenuView extends View {
 
     private void createScene(VBox root) {
 
-
         // Add Regions to root children //
-        root.getChildren().addAll(graphsBox,usersBox,settingsBox, disconnectBox);
+        root.getChildren().addAll(graphsBox, usersBox, settingsBox, disconnectBox);
 
         // Add Components to Regions children //
         graphsBox.getChildren().add(viewGraphsButton);
@@ -82,6 +82,7 @@ public class MenuView extends View {
         graphsBox.prefWidthProperty().bind(root.widthProperty());
         usersBox.prefWidthProperty().bind(root.widthProperty());
         settingsBox.prefWidthProperty().bind(root.widthProperty());
+        disconnectBox.prefWidthProperty().bind(root.widthProperty());
 
         // Utiliser des contraintes de taille pour les boutons
         Button[] buttons = {viewGraphsButton, manageUsersButton, applicationSettingsButton, disconnectButton};
@@ -93,13 +94,19 @@ public class MenuView extends View {
 
         // Utiliser des propriétés de redimensionnement pour la VBox et les HBox
         root.setFillWidth(true);
-        for (HBox hbox : new HBox[]{graphsBox, usersBox, settingsBox}) {
+        for (HBox hbox : new HBox[]{graphsBox, usersBox, settingsBox, disconnectBox}) {
             hbox.setFillHeight(true);
             HBox.setHgrow(hbox, Priority.ALWAYS);
+            hbox.setStyle("-fx-padding: 4px;");
         }
 
+        titleLabel.setStyle("-fx-font-size: 60px;" +
+                "-fx-font-family: Times New Roman;");
 
-        root.setStyle("-fx-alignment: center");
+        root.setStyle("-fx-alignment: center;" +
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
+                "-fx-background-color: #222222;");
+
     }
 
 
