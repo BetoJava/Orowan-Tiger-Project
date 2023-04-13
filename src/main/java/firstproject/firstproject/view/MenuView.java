@@ -11,8 +11,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+
 public class MenuView extends View {
 
+    private Label titleLabel = new Label ("Menu");
     private Button viewGraphsButton = new Button("View Graphs");
     private Button manageUsersButton = new Button("Manage Users");
     private Button applicationSettingsButton = new Button("Application Settings");
@@ -50,6 +52,7 @@ public class MenuView extends View {
         applicationSettingsButton.setContentDisplay(ContentDisplay.LEFT);
         disconnectButton.setGraphic(Assets.imageMap75.get("door"));
         disconnectButton.setContentDisplay(ContentDisplay.LEFT);
+        titleLabel.setGraphic(Assets.imageMap75.get("home"));
     }
 
     private void createButton() {
@@ -74,6 +77,7 @@ public class MenuView extends View {
     }
 
     private void customComponents(VBox root) {
+
         graphsBox.setAlignment(Pos.CENTER);
         usersBox.setAlignment(Pos.CENTER);
         settingsBox.setAlignment(Pos.CENTER);
@@ -90,6 +94,12 @@ public class MenuView extends View {
             button.setMinWidth(150); // taille minimale
             button.setMaxWidth(Double.MAX_VALUE); // taille maximale
             button.setPrefWidth(300); // taille préférée
+            button.setStyle("-fx-background-color: #2f2f2f;" +
+                    "-fx-text-fill: white;" +
+                    "-fx-background-radius: 50;" +
+                    "-fx-pref-height: 50;" +
+                    "-fx-font-size: 16;");
+
         }
 
         // Utiliser des propriétés de redimensionnement pour la VBox et les HBox

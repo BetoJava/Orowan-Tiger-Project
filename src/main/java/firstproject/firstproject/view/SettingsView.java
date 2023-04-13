@@ -57,10 +57,12 @@ public class SettingsView extends View{
 
         // Action Toggle button
         ToggleButton toggleButton = new ToggleButton("Disable");
+        toggleButton.setStyle("-fx-background-color: #383838; -fx-text-fill: white;");
+
         toggleButton.setOnAction(event -> {
             if(toggleButton.isSelected()) {
                 toggleButton.setText("Enable");
-                toggleButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+                toggleButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
                 getStandFromID(comboBox.getValue()).setEnable(true);
             } else {
                 toggleButton.setText("Disable");
@@ -84,11 +86,19 @@ public class SettingsView extends View{
 
     }
     private void customComponents(VBox root) {
+
         titleLabel.setGraphic(Assets.imageMap75.get("settings"));
         menuButton.setGraphic(Assets.imageMap75.get("home"));
         menuButton.setContentDisplay(ContentDisplay.LEFT);
-        root.setStyle("-fx-alignment: center");
+        menuButton.setStyle("-fx-background-color: #2f2f2f;" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 50;" +
+                "-fx-pref-height: 50;" +
+                "-fx-font-size: 16;");
 
+        comboBox.setStyle("-fx-background-color: #222222;" +
+                " -fx-text-fill: white;" +
+                "-fx-padding: 32px;");
         standBox.setStyle("-fx-alignment: center");
         titleLabel.setStyle("-fx-font-size: 60px;" +
                 "-fx-font-family: Times New Roman;" +

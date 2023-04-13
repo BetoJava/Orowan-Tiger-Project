@@ -167,6 +167,8 @@ public class UserManagerView extends View {
             HBox toggleButtonsBox = new HBox();
             toggleButtonsBox.getChildren().addAll(adminToggleButton, userToggleButton);
 
+            // Appliquer le style
+            //newRoot.setStyle(oggleButtonsBox.getChildren().addAll(adminToggleButton, userToggleButton);
 
             // Créer un événement pour le bouton "Save"
             saveButton.setOnAction(e -> {
@@ -201,9 +203,38 @@ public class UserManagerView extends View {
 
 
     private void customComponents(VBox root) {
+        titleLabel.setGraphic(Assets.imageMap75.get("users"));
+        addUserButton.setGraphic(Assets.imageMap75.get("personAdd"));
         menuButton.setGraphic(Assets.imageMap75.get("home"));
         menuButton.setContentDisplay(ContentDisplay.LEFT);
-        root.setStyle("-fx-alignment: center");
+        menuButton.setStyle("-fx-background-color: #2f2f2f;" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 50;" +
+                "-fx-pref-height: 50;" +
+                "-fx-font-size: 16;");
+
+        addUserButton.setStyle("-fx-background-color: #2f2f2f;" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 50;" +
+                "-fx-pref-height: 50;" +
+                "-fx-font-size: 16;");
+
+        table.setStyle("-fx-background-color: #333333; " +
+                "-fx-text-background-color: white; " +
+                "-fx-control-inner-background: #333333;" +
+                "-fx-table-header-background-color: #333333;" +
+                "-fx-text-fill: white;" +
+                "-fx-selection-bar: #555555;" +
+                "-fx-selection-bar-text: white;" +
+                "-fx-table-cell-border-color: white; " +
+                "-fx-table-header-border-color: white;");
+
+        tableBox.setStyle("-fx-padding: 16px 400px;");
+
+        root.setStyle("-fx-alignment: center;" +
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
+                "-fx-background-color: #222222;");
+
         titleBox.setStyle("-fx-alignment: center");
         titleLabel.setStyle("-fx-font-size: 60px;" +
                 "-fx-font-family: Times New Roman;" +

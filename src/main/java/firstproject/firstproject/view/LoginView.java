@@ -15,6 +15,8 @@ import javafx.stage.Stage;
 
 public class LoginView extends View {
 
+    private GridPane gp = new GridPane();
+
     private Label titleLabel = new Label("OROWAN");
 
     private VBox fieldBox = new VBox();
@@ -63,6 +65,7 @@ public class LoginView extends View {
         root.getChildren().add(connectionButton);
 
         // Add Components to Regions children //
+        fieldBox.getChildren().addAll(identifierBox,passwordBox);
         identifierBox.getChildren().add(identifierLabel);
         identifierBox.getChildren().add(identifierTextField);
         passwordBox.getChildren().add(passwordLabel);
@@ -70,11 +73,43 @@ public class LoginView extends View {
     }
 
     private void customComponents(VBox root) {
-        root.setStyle("-fx-alignment: center");
-        identifierBox.setStyle("-fx-alignment: center");
-        passwordBox.setStyle("-fx-alignment: center");
+
+        identifierBox.setStyle("-fx-alignment: center;" +
+                "-fx-padding: 4px;");
+        passwordBox.setStyle("-fx-alignment: center;" +
+                "-fx-padding: 4px;");
+        fieldBox.prefWidthProperty().bind(passwordBox.prefWidthProperty());
+        fieldBox.setStyle("-fx-alignment: center;");
+        fieldBox.setSpacing(4);
+
+        root.setStyle("-fx-alignment: center;" +
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
+                "-fx-background-color: #222222;");
+        root.setSpacing(10);
+
+
+        // Changer la couleur et la police d'écriture du titleLabel
+        titleLabel.setTextFill(Color.ORANGE);
         titleLabel.setStyle("-fx-font-size: 60px;" +
-                "-fx-font-family: Times New Roman;");
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
+                "-fx-alignment: center");
+
+        // Set text color
+        identifierLabel.setStyle("-fx-text-fill: white;");
+        passwordLabel.setStyle("-fx-text-fill: white;");
+
+        // Set button color
+        connectionButton.setStyle("-fx-background-color: #2f2f2f;" +
+                "-fx-text-fill: white;" +
+                "-fx-background-radius: 30;" +
+                "-fx-alignment: center;" +
+                "-fx-font-size: 16px");
+
+        // Set text field color
+        identifierTextField.setStyle("-fx-background-color: #383838;" +
+                "-fx-text-fill: white;");
+        passwordTextField.setStyle("-fx-background-color: #383838;" +
+                "-fx-text-fill: white;");
     }
 
 
