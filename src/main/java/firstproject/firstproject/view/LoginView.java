@@ -43,6 +43,7 @@ public class LoginView extends View {
         connectionButton.setOnAction(e -> {
             H2Database h2 = H2Database.getInstance();
             User currentUser = Main.getCurrentUser();
+            // If user exist, change view to MenuView
             if(h2.loginUser(currentUser.getIdentifier(), currentUser.getPassword())) {
                 stage.setScene(new MenuView(new VBox(), stage));
             }
