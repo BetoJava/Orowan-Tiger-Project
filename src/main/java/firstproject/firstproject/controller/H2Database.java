@@ -106,14 +106,14 @@ public class H2Database {
                 "mat_id INT)";
         stmt.executeUpdate(sql);
 
-        sql = "CREATE TABLE IF NOT EXISTS users_stands " +
-                "(user_id INT AUTO_INCREMENT PRIMARY KEY," +
-                " stand_id VARCHAR(255) NOT NULL)";
-        stmt.executeUpdate(sql);
-
         sql = "CREATE TABLE IF NOT EXISTS stands (" +
                 "stand_id VARCHAR(255) PRIMARY KEY, " +
                 "enabled BOOLEAN NOT NULL)";
+        stmt.executeUpdate(sql);
+
+        sql = "CREATE TABLE IF NOT EXISTS users_stands " +
+                "(user_id INT," +
+                " stand_id VARCHAR(255) NOT NULL)";
         stmt.executeUpdate(sql);
 
         stmt.close();
