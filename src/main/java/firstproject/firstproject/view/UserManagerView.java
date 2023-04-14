@@ -52,6 +52,7 @@ public class UserManagerView extends View {
         columnName.setCellValueFactory(new PropertyValueFactory<>("identifier"));
         columnRole.setCellValueFactory(new PropertyValueFactory<>("role"));
 
+
         ObservableList<User> users = FXCollections.observableArrayList();
         users.addAll(usersList);
         table.setItems(users);
@@ -85,6 +86,7 @@ public class UserManagerView extends View {
 
         Label label = new Label("Add new User");
         label.setGraphic(Assets.imageMap75.get("blackPersonAdd"));
+        Label errorLabel = new Label("");
         HBox usernameBox = new HBox();
         HBox passwordBox = new HBox();
         Label usernameLabel = new Label ("User Id :");
@@ -119,6 +121,10 @@ public class UserManagerView extends View {
             ToggleButton selectedToggle = (ToggleButton)toggleGroup.getSelectedToggle();
             String role = selectedToggle.getText(); // Récupérer le rôle sélectionné
 
+            if (username.isEmpty() || password.isEmpty() || role == null) {
+                errorLabel.setText("Please fill all fields.");
+            } else {
+
             // Ajouter un nouvel utilisateur à la liste existante
             User newUser = new User(0, username, password, role);
             users.add(newUser);
@@ -126,6 +132,10 @@ public class UserManagerView extends View {
 
             // Fermer la fenêtre d'ajout d'utilisateur
             stage.close();
+
+            }
+
+
         });
 
         stage.setTitle("Adding new user");
@@ -140,9 +150,10 @@ public class UserManagerView extends View {
         saveButton.setStyle("-fx-padding: 4px;");
         label.setStyle("-fx-padding: 4px;" +
                 "-fx-font-size: 22px;");
+        errorLabel.setStyle("-fx-padding: 4px;"+"-fx-text-fill : red;");
 
         // Ajouter tous les éléments à la nouvelle scene
-        newRoot.getChildren().addAll(label, usernameBox, passwordBox,toggleButtonsBox,saveButton);
+        newRoot.getChildren().addAll(label,errorLabel, usernameBox, passwordBox,toggleButtonsBox,saveButton);
         // Afficher la nouvelle fenêtre
         stage.setScene(scene);
         stage.show();
@@ -157,6 +168,7 @@ public class UserManagerView extends View {
         Label labelPassword = new Label("Password : " + password);
         Label labelNewUsername = new Label("New Username : ");
         Label labelNewPassword = new Label("New Password : ");
+        Label errorLabel = new Label("");
         TextField newUsernameTV = new TextField();
         TextField newPasswordTV = new TextField();
         TextField confirmPasswordTV = new TextField();
@@ -198,7 +210,7 @@ public class UserManagerView extends View {
             selectedToggleButton.setSelected(true);
         }
 
-        VBox vbox = new VBox(labelUserName, labelPassword, newUsernameBox, newPasswordBox,confirmPasswordTV, toggleButtonsBox, buttonBox);
+        VBox vbox = new VBox(labelUserName, labelPassword,errorLabel, newUsernameBox, newPasswordBox,confirmPasswordTV, toggleButtonsBox, buttonBox);
 
         Scene scene = new Scene(vbox, 300, 200);
 
@@ -223,33 +235,43 @@ public class UserManagerView extends View {
                 "-fx-font-weight: bold;"+"-fx-text-fill: white;");
         labelPassword.setStyle("-fx-padding: 4px;" +
                 "-fx-font-weight: bold;"+"-fx-text-fill: white;");
-
+        errorLabel.setStyle("-fx-padding : 4px;"+"-fx-text-fill : red;");
         labelNewUsername.setStyle("-fx-padding: 4px;"+"-fx-text-fill:white;");
         labelNewPassword.setStyle("-fx-padding: 4px;"+ "-fx-text-fill: white;");
         newUsernameTV.setStyle("-fx-background-color: #383838;" +
                 "-fx-text-fill: white;");
         newPasswordTV.setStyle("-fx-background-color: #383838;" + "-fx-text-fill: white;");
-        confirmPasswordTV.setStyle("-fx-background-color:#383838 ;"+ "-fx-prompt-text-fill: grey;" + "-fx-text-fill: white;");
+        confirmPasswordTV.setStyle("-fx-background-color:#383838 ;"+ "-fx-prompt-text-fill: gray;" + "-fx-text-fill: white;");
         newStage.setScene(scene);
         newStage.show();
 
         // Créer un événement pour le bouton "Save"
 
         saveButton.setOnAction(event -> {
-            if(newPasswordTV.getText().equals(confirmPasswordTV.getText())){
-            // Mettre à jour les propriétés de l'utilisateur sélectionné
-            selectedUser.setIdentifier(newUsernameTV.getText());
-            selectedUser.setPassword(newPasswordTV.getText());
+            String newUsername = newUsernameTV.getText();
+            String newPassword = newPasswordTV.getText();
             ToggleButton selectedToggle = (ToggleButton)toggleGroup.getSelectedToggle();
             String newRole = selectedToggle.getText();
-            selectedUser.setRole(newRole);
 
-            H2Database.getInstance().updateUser(selectedUser.getId(), selectedUser.getIdentifier(),
+            if (newUsername.isEmpty() || newPassword.isEmpty() || newRole == null) {
+                errorLabel.setText("Please fill all fields.");
+            } else if (!newPassword.equals(confirmPasswordTV.getText())) {
+                errorLabel.setText("Passwords don't match");
+            } else {
+
+            // Mettre à jour les propriétés de l'utilisateur sélectionné
+                    selectedUser.setIdentifier(newUsernameTV.getText());
+                    selectedUser.setPassword(newPasswordTV.getText());
+                    selectedUser.setRole(newRole);
+
+                H2Database.getInstance().updateUser(selectedUser.getId(), selectedUser.getIdentifier(),
                                                 selectedUser.getPassword(), selectedUser.isEngineer());
-            // Fermer la fenêtre d'ajout d'utilisateur
-            newStage.close();
-            table.getSelectionModel().clearSelection();
-            table.refresh();
+                // Fermer la fenêtre d'ajout d'utilisateur
+                newStage.close();
+                table.getSelectionModel().clearSelection();
+                table.refresh();
+
+
             }
         });
 
@@ -293,6 +315,7 @@ public class UserManagerView extends View {
                 "-fx-selection-bar-text: white;" +
                 "-fx-table-cell-border-color: white; " +
                 "-fx-table-header-border-color: white;");
+
 
         tableBox.setStyle("-fx-padding: 16px 400px;");
 

@@ -45,7 +45,7 @@ public class Main extends Application {
         VBox root = new VBox();
         LoginView mainView = new LoginView(root, stage);
         stage.setTitle("TIGER - OROWAN");
-        //stage.getIcons().add(new Image("./icon.png"));
+        stage.getIcons().add(Assets.imageMap75.get("icon").getImage());
         stage.setScene(mainView);
         stage.show();
 

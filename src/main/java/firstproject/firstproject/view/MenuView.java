@@ -43,6 +43,7 @@ public class MenuView extends View {
         createButton();
         createScene(root);
 
+
     }
 
     private void setImage() {
@@ -66,15 +67,22 @@ public class MenuView extends View {
     }
 
     private void createScene(VBox root) {
-
-        // Add Regions to root children //
-        root.getChildren().addAll(titleLabel, graphsBox, usersBox, settingsBox, disconnectBox, labelUserName);
-
         // Add Components to Regions children //
         graphsBox.getChildren().add(viewGraphsButton);
         usersBox.getChildren().add(manageUsersButton);
         settingsBox.getChildren().add(applicationSettingsButton);
         disconnectBox.getChildren().add(disconnectButton);
+
+        System.out.println(Main.getCurrentUser().isEngineer());
+
+        if (Main.getCurrentUser().getRole()=="Engineer"){
+            System.out.println("User is an engineer");
+            root.getChildren().addAll(titleLabel, graphsBox, usersBox, settingsBox, disconnectBox, labelUserName);
+
+        } else {
+            System.out.println("User is a worker");
+            root.getChildren().addAll(titleLabel, graphsBox, disconnectBox, labelUserName);
+        }
 
     }
 

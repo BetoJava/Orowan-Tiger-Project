@@ -14,6 +14,7 @@ public class Assets {
      * Load every images.
      */
     public static void loadAssets() {
+        URL iconPath= Assets.class.getClassLoader().getResource("firstproject/gui/icon.png");
         URL statsPath = Assets.class.getClassLoader().getResource("firstproject/gui/stats.png");
         URL manageAccountPath = Assets.class.getClassLoader().getResource("firstproject/gui/manageAccount.png");
         URL settingsPath = Assets.class.getClassLoader().getResource("firstproject/gui/settings.png");
@@ -21,6 +22,7 @@ public class Assets {
         URL homePath = Assets.class.getClassLoader().getResource("firstproject/gui/home.png");
         URL personAddPath = Assets.class.getClassLoader().getResource("firstproject/gui/personAdd.png");
 
+        ImageView iconImage = new ImageView(iconPath.toExternalForm());
         ImageView statsImage = new ImageView(statsPath.toExternalForm());
         ImageView usersImage = new ImageView(manageAccountPath.toExternalForm());
         ImageView settingsImage = new ImageView(settingsPath.toExternalForm());
@@ -39,7 +41,7 @@ public class Assets {
             colorAdjust.setHue(0.0);
             imageView.setEffect(colorAdjust);
         }
-
+        imageMap75.put("icon", setScale(iconImage, 0.75f));
         imageMap75.put("stats", setScale(statsImage, 0.75f));
         imageMap75.put("users", setScale(usersImage, 0.75f));
         imageMap75.put("settings", setScale(settingsImage, 0.75f));

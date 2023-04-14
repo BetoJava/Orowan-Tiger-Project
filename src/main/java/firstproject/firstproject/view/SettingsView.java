@@ -66,7 +66,7 @@ public class SettingsView extends View{
             standID = String.valueOf(Integer.parseInt(standID));
             if(toggleButton.isSelected()) {
                 toggleButton.setText("Enable");
-                toggleButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+                toggleButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
                 getStandFromID(standID).setEnable(true);
             } else {
                 toggleButton.setText("Disable");
@@ -82,6 +82,11 @@ public class SettingsView extends View{
             Stand selectedStand = getStandFromID(standID);
             toggleButton.setSelected(selectedStand.isEnable());
             toggleButton.setText(selectedStand.isEnable() ? "Enable" : "Disable");
+            if (toggleButton.getText().equals("Enable")){
+                toggleButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
+            } else {
+                toggleButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+            }
             H2Database.getInstance().updateStand(standID, selectedStand.isEnable());
         });
 
@@ -107,11 +112,9 @@ public class SettingsView extends View{
                 "-fx-font-size: 16;" +
                 "-fx-padding: 0px 16px;");
 
-        comboBox.setStyle("-fx-font-weight: bold;"+"-fx-background-color: #2f2f2f;" +
-                " -fx-text-fill: white;" +
-                "-fx-padding: 32px;");
-        comboBox.autosize();
+        comboBox.setStyle("-fx-border-color: gray;");
         standBox.setStyle("-fx-alignment: center");
+        standBox.setSpacing(10);
         titleLabel.setStyle("-fx-font-size: 30px;" +
                 "-fx-font-family: Times New Roman;" +
                 "-fx-text-fill: white;" +
@@ -121,7 +124,7 @@ public class SettingsView extends View{
         root.setStyle("-fx-alignment: center;" +
                 "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
                 "-fx-background-color: #222222;");
-
+        root.setSpacing(10);
 
 
 
