@@ -116,23 +116,23 @@ public class UserManagerView extends View {
 
         // Créer un événement pour le bouton "Save"
         saveButton.setOnAction(e -> {
-            // Récupérer les valeurs saisies dans les champs de texte
             String username = usernameTextField.getText();
             String password = passwordTextField.getText();
-            ToggleButton selectedToggle = (ToggleButton)toggleGroup.getSelectedToggle();
-            String role = selectedToggle.getText(); // Récupérer le rôle sélectionné
 
-            if (username.isEmpty() || password.isEmpty() || role == null) {
+            // Récupérer les valeurs saisies dans les champs de texte
+            ToggleButton selectedToggle = (ToggleButton)toggleGroup.getSelectedToggle();
+
+            if (username.isEmpty() || password.isEmpty() || selectedToggle == null) {
                 errorLabel.setText("Please fill all fields.");
             } else {
+                String role = selectedToggle.getText(); // Récupérer le rôle sélectionné
+                // Ajouter un nouvel utilisateur à la liste existante
+                User newUser = new User(0, username, password, role);
+                users.add(newUser);
+                H2Database.getInstance().addUser(newUser.getIdentifier(), newUser.getPassword(), newUser.isEngineer());
 
-            // Ajouter un nouvel utilisateur à la liste existante
-            User newUser = new User(0, username, password, role);
-            users.add(newUser);
-            H2Database.getInstance().addUser(newUser.getIdentifier(), newUser.getPassword(), newUser.isEngineer());
-
-            // Fermer la fenêtre d'ajout d'utilisateur
-            stage.close();
+                // Fermer la fenêtre d'ajout d'utilisateur
+                stage.close();
 
             }
 
@@ -154,7 +154,7 @@ public class UserManagerView extends View {
         errorLabel.setStyle("-fx-padding: 4px;"+"-fx-text-fill : red;");
 
         // Ajouter tous les éléments à la nouvelle scene
-        newRoot.getChildren().addAll(label,errorLabel, usernameBox, passwordBox,toggleButtonsBox,saveButton);
+        newRoot.getChildren().addAll(label, errorLabel, usernameBox, passwordBox, toggleButtonsBox, saveButton);
         // Afficher la nouvelle fenêtre
         stage.setScene(scene);
         stage.show();
