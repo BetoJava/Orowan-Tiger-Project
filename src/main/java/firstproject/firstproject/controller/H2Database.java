@@ -539,16 +539,17 @@ public class H2Database {
         }
     }
 
-    public void addStand(String stand_id) {
+    public void addStand(String standId) {
         String sql = "INSERT INTO stands (stand_id, enabled) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setString(1, stand_id);
+            pstmt.setString(1, standId);
             pstmt.setBoolean(2, true);
             pstmt.executeUpdate();
         }catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     // Enable a stand
     public void enableStand(String stand_id){

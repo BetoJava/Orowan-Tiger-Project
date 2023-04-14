@@ -1,6 +1,7 @@
 package firstproject.firstproject.assets;
 
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.net.URL;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 public class Assets {
 
     public static HashMap<String, ImageView> imageMap75 = new HashMap<>();
+    public static Image backgroundImage;
 
     /**
      * Load every images.
@@ -21,6 +23,7 @@ public class Assets {
         URL doorPath = Assets.class.getClassLoader().getResource("firstproject/gui/door.png");
         URL homePath = Assets.class.getClassLoader().getResource("firstproject/gui/home.png");
         URL personAddPath = Assets.class.getClassLoader().getResource("firstproject/gui/personAdd.png");
+        URL tigerBackground = Assets.class.getClassLoader().getResource("firstproject/gui/tiger.jpg");
 
         ImageView iconImage = new ImageView(iconPath.toExternalForm());
         ImageView statsImage = new ImageView(statsPath.toExternalForm());
@@ -29,6 +32,7 @@ public class Assets {
         ImageView disconnectImage = new ImageView(doorPath.toExternalForm());
         ImageView homeImage = new ImageView(homePath.toExternalForm());
         ImageView personAddImage = new ImageView(personAddPath.toExternalForm());
+        backgroundImage = new Image(tigerBackground.toExternalForm());
 
         imageMap75.put("blackStats", setScale(new ImageView(statsPath.toExternalForm()), 0.75f));
         imageMap75.put("blackHome", setScale(new ImageView(homePath.toExternalForm()), 0.75f));

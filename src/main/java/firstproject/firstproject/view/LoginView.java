@@ -1,15 +1,14 @@
 package firstproject.firstproject.view;
 
 import firstproject.firstproject.Main;
+import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.User;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -88,8 +87,14 @@ public class LoginView extends View {
         fieldBox.setSpacing(4);
 
         root.setStyle("-fx-alignment: center;" +
-                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;" +
-                "-fx-background-color: #222222;");
+                "-fx-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;");
+
+
+        // Créer un objet BackgroundImage avec l'image de fond
+        BackgroundImage background = new BackgroundImage(Assets.backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+        // Appliquer l'arrière-plan à la VBox
+        root.setBackground(new Background(background));
         root.setSpacing(10);
 
 

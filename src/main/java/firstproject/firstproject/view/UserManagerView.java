@@ -2,6 +2,7 @@ package firstproject.firstproject.view;
 
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
+import firstproject.firstproject.model.Stand;
 import firstproject.firstproject.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -214,7 +215,7 @@ public class UserManagerView extends View {
 
         VBox vbox = new VBox(labelUserName, labelPassword,errorLabel, newUsernameBox, newPasswordBox, confirmPasswordBox, toggleButtonsBox, buttonBox);
 
-        Scene scene = new Scene(vbox, 300, 250);
+        Scene scene = new Scene(vbox, 300, 350);
 
         Stage newStage = new Stage();
         newStage.setTitle("Modifying " + userIdentifier);
@@ -262,22 +263,21 @@ public class UserManagerView extends View {
             if (newUsername.isEmpty() || newPassword.isEmpty() || newRole == null) {
                 errorLabel.setText("Please fill all fields.");
             } else if (!newPassword.equals(confirmPasswordTV.getText())) {
-                errorLabel.setText("Passwords don't match");
+                errorLabel.setText("Passwords don't match.");
             } else {
 
-            // Mettre à jour les propriétés de l'utilisateur sélectionné
-                    selectedUser.setIdentifier(newUsernameTV.getText());
-                    selectedUser.setPassword(newPasswordTV.getText());
-                    selectedUser.setRole(newRole);
-
-                H2Database.getInstance().updateUser(selectedUser.getId(), selectedUser.getIdentifier(),
+                // Mettre à jour les propriétés de l'utilisateur sélectionné
+                selectedUser.setIdentifier(newUsernameTV.getText());
+                selectedUser.setPassword(newPasswordTV.getText());
+                selectedUser.setRole(newRole);
+                selectedUser.getStandList().clear();
+                H2Database h2 = H2Database.getInstance();
+                h2.updateUser(selectedUser.getId(), selectedUser.getIdentifier(),
                                                 selectedUser.getPassword(), selectedUser.isEngineer());
                 // Fermer la fenêtre d'ajout d'utilisateur
                 newStage.close();
                 table.getSelectionModel().clearSelection();
                 table.refresh();
-
-
             }
         });
 
