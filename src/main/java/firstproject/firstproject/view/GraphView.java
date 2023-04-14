@@ -147,7 +147,7 @@ public class GraphView extends View {
                 Node node = data.getNode();
                 node.setVisible(checkBoxRollSpeed.isSelected());
             }
-            reRangeYAxis(4);
+            reRangeYAxis(5);
         });
         checkBoxSigma.setOnMouseClicked(event -> {
             lineChart.getData().add(seriesSigma);

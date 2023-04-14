@@ -2,6 +2,7 @@ package firstproject.firstproject.view;
 
 import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
+import firstproject.firstproject.model.User;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 
@@ -73,14 +74,10 @@ public class MenuView extends View {
         settingsBox.getChildren().add(applicationSettingsButton);
         disconnectBox.getChildren().add(disconnectButton);
 
-        System.out.println(Main.getCurrentUser().isEngineer());
-
-        if (Main.getCurrentUser().getRole()=="Engineer"){
-            System.out.println("User is an engineer");
+        if (Main.getCurrentUser().getRole() == User.ENGINEER) {
             root.getChildren().addAll(titleLabel, graphsBox, usersBox, settingsBox, disconnectBox, labelUserName);
 
         } else {
-            System.out.println("User is a worker");
             root.getChildren().addAll(titleLabel, graphsBox, disconnectBox, labelUserName);
         }
 

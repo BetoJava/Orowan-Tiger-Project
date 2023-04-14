@@ -50,17 +50,9 @@ public class LoginView extends View {
             H2Database h2 = H2Database.getInstance();
             // If user exist, change view to MenuView
             if(h2.loginUser(identifierTextField.getText(), passwordTextField.getText())) {
-                int id = 1;
-                for(User u : h2.getUsers()) {
-                    if(u.getIdentifier() == identifierTextField.getText() && u.getPassword() == passwordTextField.getText()) {
-                        id = u.getId();
-                        break;
-                    }
-                }
-                Main.setCurrentUser(new User(id, identifierTextField.getText(), passwordTextField.getText()));
-                Main.getCurrentUser().setStandList(h2.getUserStands(id));
+                Main.setCurrentUser(h2.getUserByUsername(identifierTextField.getText()));
+                Main.getCurrentUser().setStandList(h2.getUserStands(Main.getCurrentUser().getId()));
                 stage.setScene(new MenuView(new VBox(), stage));
-                System.out.println(Main.getCurrentUser().getStandList());
             }
             else {
                 errorLabel.setText("Wrong username or password.");

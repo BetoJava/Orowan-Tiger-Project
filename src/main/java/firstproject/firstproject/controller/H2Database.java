@@ -572,6 +572,27 @@ public class H2Database {
         }
     }
 
+    public User getUserByUsername(String name){
+        User user = new User();
+        try {
+            String sql = "SELECT id, username, password, isEngineer FROM users WHERE username = ?";
+            PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, name);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+                String role = rs.getBoolean("isEngineer") ? User.ENGINEER : User.WORKER;
+                user = new User(id, username, password, role);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public ArrayList<User> getUsers(){
         ArrayList<User> users = new ArrayList<>();
 

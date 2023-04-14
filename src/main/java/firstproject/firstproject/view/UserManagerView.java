@@ -81,7 +81,7 @@ public class UserManagerView extends View {
     private void createAddUserView(ObservableList<User> users) {
         Stage stage = new Stage();
         VBox newRoot = new VBox();
-        Scene scene = new Scene(newRoot, 300, 200);
+        Scene scene = new Scene(newRoot, 300, 250);
         scene.setOnMouseClicked(e -> stage.requestFocus());
 
         Label label = new Label("Add new User");
@@ -168,16 +168,18 @@ public class UserManagerView extends View {
         Label labelPassword = new Label("Password : " + password);
         Label labelNewUsername = new Label("New Username : ");
         Label labelNewPassword = new Label("New Password : ");
+        Label labelConfirmPassword = new Label("Confirm Password : ");
         Label errorLabel = new Label("");
         TextField newUsernameTV = new TextField();
         TextField newPasswordTV = new TextField();
         TextField confirmPasswordTV = new TextField();
-        confirmPasswordTV.setPromptText("Confirm Password");
         HBox newUsernameBox = new HBox();
         HBox newPasswordBox = new HBox();
+        HBox confirmPasswordBox = new HBox();
         HBox buttonBox = new HBox();
-        newUsernameBox.getChildren().addAll(labelNewUsername,newUsernameTV);
-        newPasswordBox.getChildren().addAll(labelNewPassword,newPasswordTV);
+        newUsernameBox.getChildren().addAll(labelNewUsername, newUsernameTV);
+        newPasswordBox.getChildren().addAll(labelNewPassword, newPasswordTV);
+        confirmPasswordBox.getChildren().addAll(labelConfirmPassword, confirmPasswordTV);
         Button saveButton = new Button("Save");
         Button deleteButton = new Button("Delete");
         buttonBox.getChildren().addAll(saveButton, deleteButton);
@@ -210,9 +212,9 @@ public class UserManagerView extends View {
             selectedToggleButton.setSelected(true);
         }
 
-        VBox vbox = new VBox(labelUserName, labelPassword,errorLabel, newUsernameBox, newPasswordBox,confirmPasswordTV, toggleButtonsBox, buttonBox);
+        VBox vbox = new VBox(labelUserName, labelPassword,errorLabel, newUsernameBox, newPasswordBox, confirmPasswordBox, toggleButtonsBox, buttonBox);
 
-        Scene scene = new Scene(vbox, 300, 200);
+        Scene scene = new Scene(vbox, 300, 250);
 
         Stage newStage = new Stage();
         newStage.setTitle("Modifying " + userIdentifier);
@@ -224,9 +226,12 @@ public class UserManagerView extends View {
                 "-fx-padding: 4px 0px;");
         newPasswordBox.setStyle("-fx-alignment: center;" +
                 "-fx-padding: 4px 0px;");
+        confirmPasswordBox.setStyle("-fx-alignment: center;" +
+                "-fx-padding: 4px 0px;");
         toggleButtonsBox.setStyle("-fx-alignment: center;" +
                 "-fx-padding: 4px;");
-        buttonBox.setStyle("-fx-padding: 4px;");
+        buttonBox.setStyle("-fx-padding: 4px;" +
+                "-fx-alignment: center;");
         saveButton.setStyle("-fx-background-color: #3fa168;" +
                 "-fx-text-fill: white;");
         deleteButton.setStyle("-fx-background-color: #E72A2A;" +
@@ -238,6 +243,7 @@ public class UserManagerView extends View {
         errorLabel.setStyle("-fx-padding : 4px;"+"-fx-text-fill : red;");
         labelNewUsername.setStyle("-fx-padding: 4px;"+"-fx-text-fill:white;");
         labelNewPassword.setStyle("-fx-padding: 4px;"+ "-fx-text-fill: white;");
+        labelConfirmPassword.setStyle("-fx-padding: 4px;"+ "-fx-text-fill: white;");
         newUsernameTV.setStyle("-fx-background-color: #383838;" +
                 "-fx-text-fill: white;");
         newPasswordTV.setStyle("-fx-background-color: #383838;" + "-fx-text-fill: white;");
