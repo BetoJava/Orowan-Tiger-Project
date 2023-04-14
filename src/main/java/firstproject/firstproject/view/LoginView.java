@@ -1,9 +1,7 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
-import firstproject.firstproject.model.User;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -16,19 +14,19 @@ public class LoginView extends View {
 
 
 
-    private Label titleLabel = new Label("OROWAN");
-    private Label errorLabel =  new Label ("");
-    private VBox fieldBox = new VBox();
+    private final Label titleLabel = new Label("OROWAN");
+    private final Label errorLabel =  new Label ("");
+    private final VBox fieldBox = new VBox();
 
-    private HBox identifierBox = new HBox();
-    private Label identifierLabel = new Label("Username : ");
-    private TextField identifierTextField = new TextField();
+    private final HBox identifierBox = new HBox();
+    private final Label identifierLabel = new Label("Username : ");
+    private final TextField identifierTextField = new TextField();
 
-    private HBox passwordBox = new HBox();
-    private Label passwordLabel = new Label("Password : ");
-    private PasswordField passwordTextField = new PasswordField();
+    private final HBox passwordBox = new HBox();
+    private final Label passwordLabel = new Label("Password : ");
+    private final PasswordField passwordTextField = new PasswordField();
 
-    private Button connectionButton = new Button("Login");
+    private final Button connectionButton = new Button("Login");
 
     /**
      * Constructeur de la main view
@@ -49,8 +47,6 @@ public class LoginView extends View {
             H2Database h2 = H2Database.getInstance();
             // If user exist, change view to MenuView
             if(h2.loginUser(identifierTextField.getText(), passwordTextField.getText())) {
-                Main.setCurrentUser(h2.getUserByUsername(identifierTextField.getText()));
-                Main.getCurrentUser().setStandList(h2.getUserStands(Main.getCurrentUser().getId()));
                 stage.setScene(new MenuView(new VBox(), stage));
             }
             else {
