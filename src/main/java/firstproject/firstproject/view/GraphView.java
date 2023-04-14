@@ -1,6 +1,5 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Orowan;
@@ -16,33 +15,32 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class GraphView extends View {
 
-    private HBox radioButtonRow = new HBox();
-    private Label titleLabel = new Label("Graphics");
+    private final HBox radioButtonRow = new HBox();
+    private final Label titleLabel = new Label("Graphics");
 
     private LineChart<Number, Number> lineChart;
     private XYChart.Series<Number, Number> seriesFriction;
     private XYChart.Series<Number, Number> seriesSigma;
     private XYChart.Series<Number, Number> seriesRollSpeed;
-    private NumberAxis xAxis = new NumberAxis();
-    private NumberAxis yAxis = new NumberAxis();
+    private final NumberAxis xAxis = new NumberAxis();
+    private final NumberAxis yAxis = new NumberAxis();
     private Label computeTimeLabel;
     private CheckBox checkBoxRollSpeed;
     private CheckBox checkBoxFriction;
     private CheckBox checkBoxSigma;
     private Button menuButton;
 
-    private HBox hBoxComboBoxes = new HBox();
-    private VBox vBoxStandComboBox = new VBox();
-    private VBox vBoxStripIDComboBox = new VBox();
-    private Label standLabel = new Label("Stand :");
-    private Label stripIDLabel = new Label("Strip ID :");
-    private ComboBox<String> standComboBox = new ComboBox<>();
-    private ComboBox<String> stripIDComboBox = new ComboBox<>();
+    private final HBox hBoxComboBoxes = new HBox();
+    private final VBox vBoxStandComboBox = new VBox();
+    private final VBox vBoxStripIDComboBox = new VBox();
+    private final Label standLabel = new Label("Stand :");
+    private final Label stripIDLabel = new Label("Strip ID :");
+    private final ComboBox<String> standComboBox = new ComboBox<>();
+    private final ComboBox<String> stripIDComboBox = new ComboBox<>();
 
     /**
      * Constructeur de la View graphique
@@ -61,7 +59,7 @@ public class GraphView extends View {
     }
 
     private void createComboBoxes() {
-        for(Stand s : Main.getCurrentUser().getStandList()) {
+        for(Stand s : H2Database.getUserStands()) {
             standComboBox.getItems().add(s.getStandID());
             for(Strip strip : s.getStripList()) {
                 stripIDComboBox.getItems().add(String.valueOf(strip.getStripID()));
@@ -104,14 +102,14 @@ public class GraphView extends View {
         xAxis.setLabel("Temps en seconde");
         yAxis.setAutoRanging(true);
 
-        lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setAnimated(false);
 
-        seriesFriction = new XYChart.Series<Number, Number>();
+        seriesFriction = new XYChart.Series<>();
         seriesFriction.setName("Friction");
-        seriesRollSpeed = new XYChart.Series<Number, Number>();
+        seriesRollSpeed = new XYChart.Series<>();
         seriesRollSpeed.setName("Roll Speed");
-        seriesSigma = new XYChart.Series<Number, Number>();
+        seriesSigma = new XYChart.Series<>();
         seriesSigma.setName("Sigma");
 
         lineChart.getData().add(seriesRollSpeed);

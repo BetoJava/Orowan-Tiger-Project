@@ -1,14 +1,9 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Stand;
-import firstproject.firstproject.model.User;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -17,17 +12,16 @@ import javafx.stage.Stage;
 
 public class SettingsView extends View{
 
-    private ImageView settingsImage;
-    private Label titleLabel = new Label("Application Settings");
+    private final Label titleLabel = new Label("Application Settings");
 
-    private Label standLabel = new Label("Stand ID: ");
+    private final Label standLabel = new Label("Stand ID: ");
 
-    private HBox standBox = new HBox();
-    private Button menuButton = new Button("Menu");
+    private final HBox standBox = new HBox();
+    private final Button menuButton = new Button("Menu");
     private Label labelUserName;
 
 
-    private ComboBox<String> comboBox = new ComboBox<>();
+    private final ComboBox<String> comboBox = new ComboBox<>();
 
 
     /**
@@ -53,7 +47,7 @@ public class SettingsView extends View{
 
         // ComboBox
 
-        for(Stand s : Main.getCurrentUser().getStandList()) {
+        for(Stand s : H2Database.getUserStands()) {
             comboBox.getItems().add("F" + s.getStandID());
         }
 
@@ -68,10 +62,12 @@ public class SettingsView extends View{
                 toggleButton.setText("Enable");
                 toggleButton.setStyle("-fx-background-color: green; -fx-text-fill: white;");
                 getStandFromID(standID).setEnable(true);
+                H2Database.getInstance().enableStand(standID);
             } else {
                 toggleButton.setText("Disable");
                 toggleButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
                 getStandFromID(standID).setEnable(false);
+                H2Database.getInstance().disableStand(standID);
             }
         });
 
@@ -98,7 +94,7 @@ public class SettingsView extends View{
 
     }
     private void customComponents(VBox root) {
-        labelUserName = new Label("User : " + Main.getCurrentUser().getIdentifier());
+        labelUserName = new Label("User : " + H2Database.getUserIdentifier());
         labelUserName.setStyle("-fx-font-weight: bold;"+"-fx-text-fill: white;" +
                 "-fx-font-style: italic;");
 
@@ -131,8 +127,8 @@ public class SettingsView extends View{
     }
 
     private Stand getStandFromID(String standID) {
-        for(Stand s : Main.getCurrentUser().getStandList()) {
-            if(Integer.valueOf(s.getStandID()) == Integer.valueOf(standID)) {
+        for(Stand s : H2Database.getUserStands()) {
+            if(Integer.valueOf(s.getStandID()).equals(Integer.valueOf(standID))) {
                 return s;
             }
         }

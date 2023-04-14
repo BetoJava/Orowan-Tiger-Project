@@ -9,7 +9,6 @@ public class H2Database {
 
     private static H2Database instance = null;
 
-    private static final String JDBC_DRIVER = "org.h2.Driver";
     private static String connectionPath = "jdbc:h2:file:~/default";
     private static String dbUsername = "";
     private static String dbPassword = "";
@@ -31,8 +30,6 @@ public class H2Database {
         H2Database.dbPassword = password;
 
         try {
-            Class.forName("org.h2.Driver");
-
             H2Database.connection = DriverManager.getConnection(H2Database.connectionPath, H2Database.dbUsername, H2Database.dbPassword);
             setUpDatabase();
         }catch (Exception e) {
@@ -109,14 +106,14 @@ public class H2Database {
                 "mat_id INT)";
         stmt.executeUpdate(sql);
 
-        sql = "CREATE TABLE IF NOT EXISTS users_stands " +
-                "(user_id INT AUTO_INCREMENT PRIMARY KEY," +
-                " stand_id VARCHAR(255) NOT NULL)";
-        stmt.executeUpdate(sql);
-
         sql = "CREATE TABLE IF NOT EXISTS stands (" +
                 "stand_id VARCHAR(255) PRIMARY KEY, " +
                 "enabled BOOLEAN NOT NULL)";
+        stmt.executeUpdate(sql);
+
+        sql = "CREATE TABLE IF NOT EXISTS users_stands " +
+                "(user_id INT," +
+                " stand_id VARCHAR(255) NOT NULL)";
         stmt.executeUpdate(sql);
 
         stmt.close();
@@ -165,6 +162,11 @@ public class H2Database {
         return data;
     }
 
+    public boolean isRawDataEmpty(int stripID, String stand){
+        ArrayList<RawData> data = new ArrayList<>();
+        return loadRawData_aux(stripID, stand, data).isEmpty();
+    }
+
     public ArrayList<RawData> loadRawData(int stripID, String stand) {
         ArrayList<RawData> data = new ArrayList<>();
 
@@ -172,6 +174,10 @@ public class H2Database {
         if(!isUserEngineer() && !H2Database.thisUser.hasStand(stand))
             return data;
 
+        return loadRawData_aux(stripID, stand, data);
+    }
+
+    private ArrayList<RawData> loadRawData_aux(int stripID, String stand, ArrayList<RawData> data){
         String query = "SELECT * FROM sensor_data WHERE stand_id = ? AND mat_id = ?";
 
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
@@ -313,8 +319,6 @@ public class H2Database {
                 stmt.setString(25, data.getStand());
                 stmt.executeUpdate();
             }
-
-            stmt.close();
         }catch (SQLException e) {
             e.printStackTrace();
         }
@@ -342,11 +346,6 @@ public class H2Database {
     }
 
     //----------------------------USER MANAGEMENT----------------------------------
-    public ArrayList<Stand> getUserStands(){
-        return H2Database.thisUser.getStandList();
-    }
-
-    public static boolean isUserEngineer(){ return H2Database.thisUser.isEngineer(); }
 
     public boolean loginUser(String username, String password){
         boolean loginSuccessful = false;
@@ -553,6 +552,9 @@ public class H2Database {
 
     // Enable a stand
     public void enableStand(String stand_id){
+        if (!H2Database.isUserEngineer())
+            return;
+
         String sql = "UPDATE stands SET enabled = true WHERE stand_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, stand_id);
@@ -564,6 +566,9 @@ public class H2Database {
 
     // Disable a stand
     public void disableStand(String stand_id) {
+        if (!H2Database.isUserEngineer())
+            return;
+
         String sql = "UPDATE stands SET enabled = false WHERE stand_id = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, stand_id);
@@ -657,7 +662,7 @@ public class H2Database {
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
             String stand_id = rs.getString("stand_id");
-            Boolean enabled = rs.getBoolean("enabled");
+            boolean enabled = rs.getBoolean("enabled");
             ArrayList<Strip> strips = getStrips(stand_id);
             stands.add(new Stand(stand_id, strips, enabled));
         }
@@ -684,5 +689,10 @@ public class H2Database {
         return strips;
     }
 
-    public static void setUserIsEngineer(boolean userIsEngineer) { H2Database.thisUser.setRole( userIsEngineer ? User.ENGINEER : User.WORKER); }
+    private static void setUserIsEngineer(boolean userIsEngineer) { H2Database.thisUser.setRole( userIsEngineer ? User.ENGINEER : User.WORKER); }
+    public static ArrayList<Stand> getUserStands(){
+        return H2Database.thisUser.getStandList();
+    }
+    public static boolean isUserEngineer(){ return H2Database.thisUser.isEngineer(); }
+    public static String getUserIdentifier(){ return H2Database.thisUser.getIdentifier(); }
 }

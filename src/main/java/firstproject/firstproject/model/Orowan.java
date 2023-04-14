@@ -37,7 +37,7 @@ public class Orowan {
             e.printStackTrace();
         }
 
-        return null;
+        return new ArrayList<>();
     }
 
     /**

@@ -1,8 +1,7 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.Main;
 import firstproject.firstproject.assets.Assets;
-import firstproject.firstproject.model.User;
+import firstproject.firstproject.controller.H2Database;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 
@@ -16,18 +15,18 @@ import javafx.stage.Stage;
 
 public class MenuView extends View {
 
-    private Label titleLabel = new Label ("Menu");
-    private Button viewGraphsButton = new Button("View Graphs");
-    private Button manageUsersButton = new Button("Manage Users");
-    private Button applicationSettingsButton = new Button("Application Settings");
+    private final Label titleLabel = new Label ("Menu");
+    private final Button viewGraphsButton = new Button("View Graphs");
+    private final Button manageUsersButton = new Button("Manage Users");
+    private final Button applicationSettingsButton = new Button("Application Settings");
     private Label labelUserName;
 
-    private HBox graphsBox = new HBox();
-    private HBox usersBox = new HBox();
-    private HBox settingsBox = new HBox();
-    private HBox disconnectBox = new HBox();
+    private final HBox graphsBox = new HBox();
+    private final HBox usersBox = new HBox();
+    private final HBox settingsBox = new HBox();
+    private final HBox disconnectBox = new HBox();
 
-    private Button disconnectButton = new Button("Disconnect");
+    private final Button disconnectButton = new Button("Disconnect");
 
 
     /**
@@ -74,7 +73,7 @@ public class MenuView extends View {
         settingsBox.getChildren().add(applicationSettingsButton);
         disconnectBox.getChildren().add(disconnectButton);
 
-        if (Main.getCurrentUser().getRole() == User.ENGINEER) {
+        if (H2Database.isUserEngineer()) {
             root.getChildren().addAll(titleLabel, graphsBox, usersBox, settingsBox, disconnectBox, labelUserName);
 
         } else {
@@ -84,7 +83,7 @@ public class MenuView extends View {
     }
 
     private void customComponents(VBox root) {
-        labelUserName = new Label("User : " + Main.getCurrentUser().getIdentifier());
+        labelUserName = new Label("User : " + H2Database.getUserIdentifier());
         labelUserName.setStyle("-fx-text-fill: white;" +
                 "-fx-font-style: italic;");
 
