@@ -2,10 +2,13 @@ package firstproject.firstproject.view;
 
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -70,6 +73,15 @@ public class LoginView extends View {
         identifierBox.getChildren().add(identifierTextField);
         passwordBox.getChildren().add(passwordLabel);
         passwordBox.getChildren().add(passwordTextField);
+
+        root.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                if (event.getCode() == KeyCode.ENTER) {
+                    connectionButton.fire();
+                }
+            }
+        });
     }
 
     private void customComponents(VBox root) {

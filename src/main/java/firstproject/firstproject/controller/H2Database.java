@@ -386,7 +386,7 @@ public class H2Database {
         if (H2Database.isUserEngineer()) {
             stands = getAllStands();
         } else {
-            stands = getUserStands(H2Database.thisUser.getId());
+            stands = getAllStands();//getUserStands(H2Database.thisUser.getId());
         }
 
         return stands;
@@ -625,8 +625,8 @@ public class H2Database {
     public ArrayList<Stand> getAllStands(){
         ArrayList<Stand> stands = new ArrayList<>();
 
-        if(!isUserEngineer())
-            return stands;
+        //if(!isUserEngineer())
+        //    return stands;
 
         String sql = "SELECT stand_id, enabled FROM stands";
         try(PreparedStatement pstmt = connection.prepareStatement(sql)){

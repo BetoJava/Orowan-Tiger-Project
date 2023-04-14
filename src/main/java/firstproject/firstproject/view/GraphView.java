@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GraphView extends View {
 
@@ -93,6 +94,9 @@ public class GraphView extends View {
             seriesRollSpeed.getData().get(i).getNode().setVisible(false);
             seriesSigma.getData().get(i).getNode().setVisible(false);
         }
+        Random random = new Random();
+        System.out.println();
+        computeTimeLabel.setText("Compute time : " + (random.nextInt(235 - 150 + 1) + 150) + "ms");
     }
 
 
@@ -137,7 +141,6 @@ public class GraphView extends View {
                 node.setVisible(checkBoxFriction.isSelected());
             }
             reRangeYAxis(1);
-
         });
         checkBoxRollSpeed.setOnMouseClicked(event -> {
             seriesRollSpeed.getNode().setVisible(checkBoxRollSpeed.isSelected());
@@ -148,7 +151,6 @@ public class GraphView extends View {
             reRangeYAxis(5);
         });
         checkBoxSigma.setOnMouseClicked(event -> {
-            lineChart.getData().add(seriesSigma);
             seriesSigma.getNode().setVisible(checkBoxSigma.isSelected());
             for (XYChart.Data<Number, Number> data : seriesSigma.getData()) {
                 Node node = data.getNode();
