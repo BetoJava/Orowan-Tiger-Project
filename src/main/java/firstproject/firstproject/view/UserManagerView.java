@@ -1,9 +1,8 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
-import firstproject.firstproject.model.Stand;
 import firstproject.firstproject.model.User;
+import firstproject.firstproject.assets.Assets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
@@ -45,6 +44,9 @@ public class UserManagerView extends View {
         createScene(root);
     }
 
+    /**
+     * Crée la scène en y ajoutant tous les éléments à leur parent.
+     */
     private void createScene(VBox root) {
 
         TableColumn<User, String> columnName = new TableColumn<>("Username");
@@ -79,6 +81,9 @@ public class UserManagerView extends View {
 
     }
 
+    /**
+     * Crée et configure la fenêtre d'ajout d'utilisateurs.
+     */
     private void createAddUserView(ObservableList<User> users) {
         Stage stage = new Stage();
         VBox newRoot = new VBox();
@@ -86,7 +91,7 @@ public class UserManagerView extends View {
         scene.setOnMouseClicked(e -> stage.requestFocus());
 
         Label label = new Label("Add new User");
-        label.setGraphic(Assets.imageMap75.get("blackPersonAdd"));
+        label.setGraphic(Assets.imageMap.get("blackPersonAdd"));
         Label errorLabel = new Label("");
         HBox usernameBox = new HBox();
         HBox passwordBox = new HBox();
@@ -160,6 +165,9 @@ public class UserManagerView extends View {
         stage.show();
     }
 
+    /**
+     * Crée et configure la fenêtre de modification d'utilisateurs.
+     */
     private void createModifyingUserView(User selectedUser) {
         String userIdentifier = selectedUser.getIdentifier();
         String password = selectedUser.getPassword();
@@ -293,10 +301,13 @@ public class UserManagerView extends View {
         });
     }
 
+    /**
+     * Applique du style aux différents conmposants.
+     */
     private void customComponents(VBox root) {
-        titleLabel.setGraphic(Assets.imageMap75.get("users"));
-        addUserButton.setGraphic(Assets.imageMap75.get("personAdd"));
-        menuButton.setGraphic(Assets.imageMap75.get("home"));
+        titleLabel.setGraphic(Assets.imageMap.get("users"));
+        addUserButton.setGraphic(Assets.imageMap.get("personAdd"));
+        menuButton.setGraphic(Assets.imageMap.get("home"));
         menuButton.setContentDisplay(ContentDisplay.LEFT);
         menuButton.setStyle("-fx-background-color: #2f2f2f;" +
                 "-fx-text-fill: white;" +

@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Assets {
 
-    public static HashMap<String, ImageView> imageMap75 = new HashMap<>();
+    public static HashMap<String, ImageView> imageMap = new HashMap<>();
     public static Image backgroundImage;
 
     /**
@@ -34,9 +34,9 @@ public class Assets {
         ImageView personAddImage = new ImageView(personAddPath.toExternalForm());
         backgroundImage = new Image(tigerBackground.toExternalForm());
 
-        imageMap75.put("blackStats", setScale(new ImageView(statsPath.toExternalForm()), 0.75f));
-        imageMap75.put("blackHome", setScale(new ImageView(homePath.toExternalForm()), 0.75f));
-        imageMap75.put("blackPersonAdd", setScale(new ImageView(personAddPath.toExternalForm()), 0.75f));
+        imageMap.put("blackStats", setScale(new ImageView(statsPath.toExternalForm()), 0.75f));
+        imageMap.put("blackHome", setScale(new ImageView(homePath.toExternalForm()), 0.75f));
+        imageMap.put("blackPersonAdd", setScale(new ImageView(personAddPath.toExternalForm()), 0.75f));
 
         for(ImageView imageView : new ImageView[]{statsImage, usersImage, settingsImage, disconnectImage, homeImage, personAddImage}) {
             ColorAdjust colorAdjust = new ColorAdjust();
@@ -45,16 +45,19 @@ public class Assets {
             colorAdjust.setHue(0.0);
             imageView.setEffect(colorAdjust);
         }
-        imageMap75.put("icon", setScale(iconImage, 0.75f));
-        imageMap75.put("stats", setScale(statsImage, 0.75f));
-        imageMap75.put("users", setScale(usersImage, 0.75f));
-        imageMap75.put("settings", setScale(settingsImage, 0.75f));
-        imageMap75.put("door", setScale(disconnectImage, 0.75f));
-        imageMap75.put("home", setScale(homeImage, 0.75f));
-        imageMap75.put("personAdd", setScale(personAddImage, 0.75f));
+        imageMap.put("icon", setScale(iconImage, 0.75f));
+        imageMap.put("stats", setScale(statsImage, 0.75f));
+        imageMap.put("users", setScale(usersImage, 0.75f));
+        imageMap.put("settings", setScale(settingsImage, 0.75f));
+        imageMap.put("door", setScale(disconnectImage, 0.75f));
+        imageMap.put("home", setScale(homeImage, 0.75f));
+        imageMap.put("personAdd", setScale(personAddImage, 0.75f));
 
     }
 
+    /**
+     * Réduit la taille de l'image en entrée et la renvoie.
+     */
     public static ImageView setScale(ImageView image, float size) {
         image.setScaleX(size);
         image.setScaleY(size);

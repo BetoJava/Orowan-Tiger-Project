@@ -1,7 +1,7 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
+import firstproject.firstproject.assets.Assets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 
@@ -46,18 +46,24 @@ public class MenuView extends View {
 
     }
 
+    /**
+     * Crée et configure les Images de la view.
+     */
     private void setImage() {
-        viewGraphsButton.setGraphic(Assets.imageMap75.get("stats"));
+        viewGraphsButton.setGraphic(Assets.imageMap.get("stats"));
         viewGraphsButton.setContentDisplay(ContentDisplay.LEFT);
-        manageUsersButton.setGraphic(Assets.imageMap75.get("users"));
+        manageUsersButton.setGraphic(Assets.imageMap.get("users"));
         manageUsersButton.setContentDisplay(ContentDisplay.LEFT);
-        applicationSettingsButton.setGraphic(Assets.imageMap75.get("settings"));
+        applicationSettingsButton.setGraphic(Assets.imageMap.get("settings"));
         applicationSettingsButton.setContentDisplay(ContentDisplay.LEFT);
-        disconnectButton.setGraphic(Assets.imageMap75.get("door"));
+        disconnectButton.setGraphic(Assets.imageMap.get("door"));
         disconnectButton.setContentDisplay(ContentDisplay.LEFT);
-        titleLabel.setGraphic(Assets.imageMap75.get("home"));
+        titleLabel.setGraphic(Assets.imageMap.get("home"));
     }
 
+    /**
+     * Crée et configure les boutons de la view.
+     */
     private void createButton() {
         VBox root = new VBox();
         viewGraphsButton.setOnAction(e -> stage.setScene(new GraphView(root, stage)));
@@ -66,6 +72,9 @@ public class MenuView extends View {
         disconnectButton.setOnAction(e -> stage.setScene(new LoginView(root, stage)));
     }
 
+    /**
+     * Crée la scène en y ajoutant tous les éléments à leur parent.
+     */
     private void createScene(VBox root) {
         // Add Components to Regions children //
         graphsBox.getChildren().add(viewGraphsButton);
@@ -82,6 +91,9 @@ public class MenuView extends View {
 
     }
 
+    /**
+     * Applique du style aux différents conmposants.
+     */
     private void customComponents(VBox root) {
         labelUserName = new Label("User : " + H2Database.getUserIdentifier());
         labelUserName.setStyle("-fx-text-fill: white;" +

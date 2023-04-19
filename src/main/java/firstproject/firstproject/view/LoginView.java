@@ -1,7 +1,7 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
+import firstproject.firstproject.assets.Assets;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,6 +45,9 @@ public class LoginView extends View {
 
     }
 
+    /**
+     * Crée et configure les boutons de la view.
+     */
     private void createButton() {
         connectionButton.setOnAction(e -> {
             H2Database h2 = H2Database.getInstance();
@@ -58,6 +61,9 @@ public class LoginView extends View {
         });
     }
 
+    /**
+     * Crée la scène en y ajoutant tous les éléments à leur parent.
+     */
     private void createScene(VBox root) {
         customComponents(root);
 
@@ -84,6 +90,9 @@ public class LoginView extends View {
         });
     }
 
+    /**
+     * Applique du style aux différents conmposants.
+     */
     private void customComponents(VBox root) {
 
         identifierBox.setStyle("-fx-alignment: center;" +

@@ -1,5 +1,10 @@
 package firstproject.firstproject.model;
 
+import firstproject.firstproject.dataClasses.OrowanInputData;
+import firstproject.firstproject.dataClasses.OrowanOutputData;
+import firstproject.firstproject.dataClasses.ProcessedOutputData;
+import firstproject.firstproject.dataClasses.RawData;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -21,7 +26,8 @@ public class Orowan {
      * @return Les sortie d'Orowan.exe sous forme d'une ArrayList d'objets OrowanOutputData.
      */
     public static ArrayList<OrowanOutputData> computeOrowanModel(String stripID, String stand) {
-        String fileName = "./FichiersOrowan";
+        String currentDirectory = System.getProperty("user.dir");
+        String fileName = currentDirectory + "/FichiersOrowan";
 
         try {
             ArrayList<OrowanInputData> inputDataList = convertRawDataToInputData(getRawData(stripID, stand), stripID, stand);
@@ -78,7 +84,10 @@ public class Orowan {
      * Renvoie les RawData du stand et stripID selectionné.
      */
     public static ArrayList<RawData> getRawData(String stripID, String stand) {
-        return RawData.loadRawDataFromFile("./FichiersOrowan/Krakov/" + stripID + "_" + stand + ".txt");
+
+        String currentDirectory = System.getProperty("user.dir");
+        String fileName = currentDirectory + "/FichiersOrowan";
+        return RawData.loadRawDataFromFile(fileName + "/Krakov/" + stripID + "_" + stand + ".txt");
     }
 
     /**

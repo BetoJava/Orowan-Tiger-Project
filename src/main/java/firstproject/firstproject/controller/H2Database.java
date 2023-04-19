@@ -1,9 +1,14 @@
 package firstproject.firstproject.controller;
 
+import firstproject.firstproject.model.Stand;
+import firstproject.firstproject.model.Strip;
+import firstproject.firstproject.model.User;
+import firstproject.firstproject.dataClasses.OrowanOutputData;
+import firstproject.firstproject.dataClasses.ProcessedOutputData;
+import firstproject.firstproject.dataClasses.RawData;
+
 import java.sql.*;
 import java.util.ArrayList;
-
-import firstproject.firstproject.model.*;
 
 public class H2Database {
 
@@ -16,6 +21,9 @@ public class H2Database {
 
     private static final User thisUser = new User();
 
+    /**
+     * Méthode statique pour récupérer le singleton de la Base de données.
+     */
     public static H2Database getInstance(){
         if(instance == null)
             H2Database.instance = new H2Database("test", "sa", "");//"TigerDatabase", "sherekhan", "grrr");
@@ -25,7 +33,7 @@ public class H2Database {
 
     private H2Database(String dbName, String username, String password){
         //Set up database object
-        H2Database.connectionPath = "jdbc:h2:tcp://localhost/~/" + dbName;
+        H2Database.connectionPath = "jdbc:h2:tcp://localhost/~/data/" + dbName;
         H2Database.dbUsername = username;
         H2Database.dbPassword = password;
 
@@ -121,6 +129,9 @@ public class H2Database {
 
     //---------------------------DATA MANAGEMENT--------------------------------
 
+    /**
+     * Récupère la liste des OrowanOutputData de la base de données.
+     */
     public ArrayList<OrowanOutputData> loadOrowanData(int stripID, String stand) {
         ArrayList<OrowanOutputData> data = new ArrayList<>();
 
@@ -167,6 +178,9 @@ public class H2Database {
         return loadRawData_aux(stripID, stand, data).isEmpty();
     }
 
+    /**
+     * Récupère la liste des RawData de la base de données.
+     */
     public ArrayList<RawData> loadRawData(int stripID, String stand) {
         ArrayList<RawData> data = new ArrayList<>();
 
@@ -177,6 +191,9 @@ public class H2Database {
         return loadRawData_aux(stripID, stand, data);
     }
 
+    /**
+     * Récupère la liste des RawData de la base de données et l'ajoute dans la liste mise en entrée.
+     */
     private ArrayList<RawData> loadRawData_aux(int stripID, String stand, ArrayList<RawData> data){
         String query = "SELECT * FROM sensor_data WHERE stand_id = ? AND mat_id = ?";
 
@@ -224,6 +241,9 @@ public class H2Database {
         return data;
     }
 
+    /**
+     * Récupère la liste des ProcessedOutputData de la base de données.
+     */
     public ArrayList<ProcessedOutputData> loadProcessedOutputData(int stripID, String stand) {
         ArrayList<ProcessedOutputData> data = new ArrayList<>();
 
@@ -254,6 +274,9 @@ public class H2Database {
         return data;
     }
 
+    /**
+     * Ecrit la liste des OrowanOutputData dans la base de données.
+     */
     public void writeOrowanData(ArrayList<OrowanOutputData> data){
 
         try {
@@ -284,6 +307,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Ecrit la liste des RawData dans la base de données.
+     */
     public void writeSensorData(ArrayList<RawData> dataList){
 
         try (PreparedStatement stmt = connection.prepareStatement("INSERT INTO sensor_data " +
@@ -325,6 +351,9 @@ public class H2Database {
 
     }
 
+    /**
+     * Ecrit la liste des ProcessedOutputData dans la base de données.
+     */
     public void writeProcessedOutputData(ArrayList<ProcessedOutputData> data){
 
         try {
@@ -347,6 +376,9 @@ public class H2Database {
 
     //----------------------------USER MANAGEMENT----------------------------------
 
+    /**
+     * Méthode qui renvoie true si l'utilisateur renseigné en entrée existe.
+     */
     public boolean loginUser(String username, String password){
         boolean loginSuccessful = false;
 
@@ -377,8 +409,14 @@ public class H2Database {
         return loginSuccessful;
     }
 
+    /**
+     * Met à jour la liste des stands de l'utilisateur à partir des données de la base de données.
+     */
     public void refreshUserStands(){ H2Database.thisUser.setStandList(loadUserStands()); }
 
+    /**
+     * Récupère la liste des stands de l'utilisateur depuis de la base de données.
+     */
     private ArrayList<Stand> loadUserStands(){
 
         ArrayList<Stand> stands;
@@ -392,6 +430,9 @@ public class H2Database {
         return stands;
     }
 
+    /**
+     * Ajoute l'utilisateur en entrée dans la base de données.
+     */
     public void addUser(String username, String password, boolean isEngineer) {
         if (!H2Database.isUserEngineer())
             return;
@@ -410,6 +451,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Retire l'utilisateur en entrée dans la base de données.
+     */
     public void removeUser(int userId) {
         if (!H2Database.isUserEngineer())
             return;
@@ -437,6 +481,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Met à jour l'utilisateur en entrée dans la base de données.
+     */
     public void updateUser(int userId, String username, String password, boolean isEngineer) {
         if (!H2Database.isUserEngineer())
             return;
@@ -459,6 +506,9 @@ public class H2Database {
 
     }
 
+    /**
+     * Met à jour le stand en entrée dans la base de données.
+     */
     public void updateStand(String stand_id, boolean isEnable) {
         if (!H2Database.isUserEngineer())
             return;
@@ -479,6 +529,9 @@ public class H2Database {
 
     }
 
+    /**
+     * Ajoute un stand de la base de données à un utilisateur en entrée.
+     */
     public void addStandForUser(int userId, String standId) {
         if (!H2Database.isUserEngineer())
             return;
@@ -509,6 +562,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Retire un stand de la base de données à un utilisateur en entrée.
+     */
     public void removeStandForUser(int userId, String standId) {
         if (!H2Database.isUserEngineer())
             return;
@@ -526,6 +582,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Ajoute un strip au stand d'entrée dans la base de données.
+     */
     public void addStrip(int mat, String stand){
         try {
             String insertSql = "INSERT INTO strip_stand (mat_id, stand_id) VALUES (?, ?)";
@@ -538,6 +597,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Ajoute un stand dans la base de données.
+     */
     public void addStand(String standId) {
         String sql = "INSERT INTO stands (stand_id, enabled) VALUES (?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -549,8 +611,9 @@ public class H2Database {
         }
     }
 
-
-    // Enable a stand
+    /**
+     * Active un stand dans la base de données.
+     */
     public void enableStand(String stand_id){
         if (!H2Database.isUserEngineer())
             return;
@@ -564,7 +627,9 @@ public class H2Database {
         }
     }
 
-    // Disable a stand
+    /**
+     * Désactive un stand dans la base de données.
+     */
     public void disableStand(String stand_id) {
         if (!H2Database.isUserEngineer())
             return;
@@ -578,6 +643,9 @@ public class H2Database {
         }
     }
 
+    /**
+     * Récupère l'utiliateur depuis son identifiant à partir de la base de données.
+     */
     public User getUserByUsername(String name){
         User user = new User();
         try {
@@ -599,6 +667,9 @@ public class H2Database {
         return user;
     }
 
+    /**
+     * Récupère la liste des utiliateurs présents dans la base de données.
+     */
     public ArrayList<User> getUsers(){
         ArrayList<User> users = new ArrayList<>();
 
@@ -622,6 +693,9 @@ public class H2Database {
         return users;
     }
 
+    /**
+     * Récupère la liste des stands présents dans la base de données.
+     */
     public ArrayList<Stand> getAllStands(){
         ArrayList<Stand> stands = new ArrayList<>();
 
@@ -638,6 +712,9 @@ public class H2Database {
         return stands;
     }
 
+    /**
+     * Récupère la liste des stands de l'utilisateur d'entrée dans la base de données.
+     */
     public ArrayList<Stand> getUserStands(int userID){
         ArrayList<Stand> stands = new ArrayList<>();
 
@@ -658,6 +735,9 @@ public class H2Database {
         return stands;
     }
 
+    /**
+     * Récupère la liste des stands de l'utilisateur d'entrée dans la base de données et met les valeurs dans la liste en entrée.
+     */
     private ArrayList<Stand> getStands_aux(PreparedStatement pstmt, ArrayList<Stand> stands) throws SQLException{
         ResultSet rs = pstmt.executeQuery();
         while (rs.next()) {
@@ -670,6 +750,9 @@ public class H2Database {
         return stands;
     }
 
+    /**
+     * Récupère la liste des Strips d'un stand dans la base de données.
+     */
     private ArrayList<Strip> getStrips(String standId){
         ArrayList<Strip> strips = new ArrayList<>();
 
@@ -689,10 +772,25 @@ public class H2Database {
         return strips;
     }
 
+    /**
+     * Modifie si l'utilisateur est un ingénieur ou non.
+     */
     private static void setUserIsEngineer(boolean userIsEngineer) { H2Database.thisUser.setRole( userIsEngineer ? User.ENGINEER : User.WORKER); }
+
+    /**
+     * Récupère la liste des Stands de l'utilisateur depuis la base de données.
+     */
     public static ArrayList<Stand> getUserStands(){
         return H2Database.thisUser.getStandList();
     }
+
+    /**
+     * Renvoie si l'utilisateur est un ingénieur ou non.
+     */
     public static boolean isUserEngineer(){ return H2Database.thisUser.isEngineer(); }
+
+    /**
+     * Récupère l'identifiant de l'utilisateur depuis la base de données.
+     */
     public static String getUserIdentifier(){ return H2Database.thisUser.getIdentifier(); }
 }

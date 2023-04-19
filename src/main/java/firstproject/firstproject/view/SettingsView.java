@@ -1,8 +1,8 @@
 package firstproject.firstproject.view;
 
-import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
 import firstproject.firstproject.model.Stand;
+import firstproject.firstproject.assets.Assets;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -35,14 +35,18 @@ public class SettingsView extends View{
         customComponents(root);
         createButton();
         createScene(root);
-
     }
 
-
+    /**
+     * Crée et configure les boutons de la view.
+     */
     private void createButton(){
         menuButton.setOnAction(e -> stage.setScene(new MenuView(new VBox(), stage)));
     }
 
+    /**
+     * Crée la scène en y ajoutant tous les éléments à leur parent.
+     */
     private void createScene(VBox root) {
 
         // ComboBox
@@ -93,13 +97,17 @@ public class SettingsView extends View{
 
 
     }
+
+    /**
+     * Applique du style aux différents conmposants.
+     */
     private void customComponents(VBox root) {
         labelUserName = new Label("User : " + H2Database.getUserIdentifier());
         labelUserName.setStyle("-fx-font-weight: bold;"+"-fx-text-fill: white;" +
                 "-fx-font-style: italic;");
 
-        titleLabel.setGraphic(Assets.imageMap75.get("settings"));
-        menuButton.setGraphic(Assets.imageMap75.get("home"));
+        titleLabel.setGraphic(Assets.imageMap.get("settings"));
+        menuButton.setGraphic(Assets.imageMap.get("home"));
         menuButton.setContentDisplay(ContentDisplay.LEFT);
         menuButton.setStyle("-fx-background-color: #2f2f2f;" +
                 "-fx-text-fill: white;" +
@@ -125,6 +133,7 @@ public class SettingsView extends View{
 
 
     }
+
 
     private Stand getStandFromID(String standID) {
         for(Stand s : H2Database.getUserStands()) {

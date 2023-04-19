@@ -1,4 +1,4 @@
-package firstproject.firstproject.model;
+package firstproject.firstproject.dataClasses;
 
 public class ProcessedOutputData {
 

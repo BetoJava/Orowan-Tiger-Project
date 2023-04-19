@@ -1,5 +1,7 @@
 package firstproject.firstproject.model;
 
+import firstproject.firstproject.dataClasses.OrowanOutputData;
+
 import java.util.ArrayList;
 
 public class Strip {

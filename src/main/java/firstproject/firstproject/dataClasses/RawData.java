@@ -1,4 +1,4 @@
-package firstproject.firstproject.model;
+package firstproject.firstproject.dataClasses;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -64,6 +64,9 @@ public class RawData {
         WorkRollSpeed = workRollSpeed;
     }
 
+    /**
+     * Renvoie la liste des données brutes présentes dans le fichier donnée en entrée.
+     */
     public static ArrayList<RawData> loadRawDataFromFile(String filename) {
         ArrayList<RawData> rawDataList = new ArrayList<>();
         BufferedReader reader = null;
@@ -112,199 +115,101 @@ public class RawData {
         return rawDataList;
     }
 
-    public void setStand(String stand){ this.stand = stand; }
-
     public String getStand(){ return this.stand; }
 
     public int getLp() {
         return Lp;
     }
 
-    public void setLp(int lp) {
-        Lp = lp;
-    }
-
     public int getMatID() {
         return MatID;
-    }
-
-    public void setMatID(int matID) {
-        MatID = matID;
     }
 
     public double getxTime() {
         return xTime;
     }
 
-    public void setxTime(double xTime) {
-        this.xTime = xTime;
-    }
-
     public double getxLoc() {
         return xLoc;
-    }
-
-    public void setxLoc(double xLoc) {
-        this.xLoc = xLoc;
     }
 
     public double getEnThick() {
         return EnThick;
     }
 
-    public void setEnThick(double enThick) {
-        EnThick = enThick;
-    }
-
     public double getExThick() {
         return ExThick;
-    }
-
-    public void setExThick(double exThick) {
-        ExThick = exThick;
     }
 
     public double getEnTens() {
         return EnTens;
     }
 
-    public void setEnTens(double enTens) {
-        EnTens = enTens;
-    }
-
     public double getExTens() {
         return ExTens;
-    }
-
-    public void setExTens(double exTens) {
-        ExTens = exTens;
     }
 
     public double getRollForce() {
         return RollForce;
     }
 
-    public void setRollForce(double rollForce) {
-        RollForce = rollForce;
-    }
-
     public double getFSlip() {
         return FSlip;
-    }
-
-    public void setFSlip(double FSlip) {
-        this.FSlip = FSlip;
     }
 
     public double getDiameter() {
         return Diameter;
     }
 
-    public void setDiameter(double diameter) {
-        Diameter = diameter;
-    }
-
     public double getRolledLengthForWorkRolls() {
         return RolledLengthForWorkRolls;
-    }
-
-    public void setRolledLengthForWorkRolls(double rolledLengthForWorkRolls) {
-        RolledLengthForWorkRolls = rolledLengthForWorkRolls;
     }
 
     public double getYoungModulus() {
         return youngModulus;
     }
 
-    public void setYoungModulus(double youngModulus) {
-        this.youngModulus = youngModulus;
-    }
-
     public double getBackupRollDia() {
         return BackupRollDia;
-    }
-
-    public void setBackupRollDia(double backupRollDia) {
-        BackupRollDia = backupRollDia;
     }
 
     public double getRolledLengthForBackupRolls() {
         return RolledLengthForBackupRolls;
     }
 
-    public void setRolledLengthForBackupRolls(double rolledLengthForBackupRolls) {
-        RolledLengthForBackupRolls = rolledLengthForBackupRolls;
-    }
-
     public double getMu() {
         return mu;
-    }
-
-    public void setMu(double mu) {
-        this.mu = mu;
     }
 
     public double getTorque() {
         return torque;
     }
 
-    public void setTorque(double torque) {
-        this.torque = torque;
-    }
-
     public double getAverageSigma() {
         return averageSigma;
-    }
-
-    public void setAverageSigma(double averageSigma) {
-        this.averageSigma = averageSigma;
     }
 
     public double getInputError() {
         return inputError;
     }
 
-    public void setInputError(double inputError) {
-        this.inputError = inputError;
-    }
-
     public double getLubWFlUp() {
         return LubWFlUp;
-    }
-
-    public void setLubWFlUp(double lubWFlUp) {
-        LubWFlUp = lubWFlUp;
     }
 
     public double getLubWFlLo() {
         return LubWFlLo;
     }
 
-    public void setLubWFlLo(double lubWFlLo) {
-        LubWFlLo = lubWFlLo;
-    }
-
     public double getLubOilFlUp() {
         return LubOilFlUp;
-    }
-
-    public void setLubOilFlUp(double lubOilFlUp) {
-        LubOilFlUp = lubOilFlUp;
     }
 
     public double getLubOilFlLo() {
         return LubOilFlLo;
     }
 
-    public void setLubOilFlLo(double lubOilFlLo) {
-        LubOilFlLo = lubOilFlLo;
-    }
-
     public double getWorkRollSpeed() {
         return WorkRollSpeed;
-    }
-
-    public void setWorkRollSpeed(double workRollSpeed) {
-        WorkRollSpeed = workRollSpeed;
     }
 }

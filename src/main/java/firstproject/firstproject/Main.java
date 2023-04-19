@@ -2,9 +2,9 @@ package firstproject.firstproject;
 
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
+import firstproject.firstproject.dataClasses.OrowanOutputData;
+import firstproject.firstproject.dataClasses.ProcessedOutputData;
 import firstproject.firstproject.model.Orowan;
-import firstproject.firstproject.model.OrowanOutputData;
-import firstproject.firstproject.model.ProcessedOutputData;
 import firstproject.firstproject.view.LoginView;
 import javafx.application.Application;
 import javafx.scene.layout.VBox;
@@ -36,7 +36,7 @@ public class Main extends Application {
         Assets.loadAssets();
 
         H2Database h2 = H2Database.getInstance();
-//        H2Database.setUserIsEngineer(true);
+        //H2Database.setUserIsEngineer(true);
         fillDatabase(h2);
 
 
@@ -44,12 +44,15 @@ public class Main extends Application {
         VBox root = new VBox();
         LoginView mainView = new LoginView(root, stage);
         stage.setTitle("TIGER - OROWAN");
-        stage.getIcons().add(Assets.imageMap75.get("icon").getImage());
+        stage.getIcons().add(Assets.imageMap.get("icon").getImage());
         stage.setScene(mainView);
         stage.show();
 
     }
 
+    /**
+     * Rempli la base de donnée si elle est vide avec les données brutes, d'input et d'output d'Orowan et d'output moyennées.
+     */
     private void fillDatabase(H2Database h2) {
         if(h2.isRawDataEmpty(1939351,"2")) {
             h2.writeSensorData(Orowan.getRawData("1939351","2"));
@@ -59,7 +62,6 @@ public class Main extends Application {
             h2.writeProcessedOutputData(processedOutputData2);
             h2.addStand("2");
             h2.addStrip(1939351, "2");
-
         }
 
         if(h2.isRawDataEmpty(1939351,"3")) {
@@ -71,6 +73,7 @@ public class Main extends Application {
             h2.addStand("3");
             h2.addStrip(1939351, "3");
         }
+
     }
 
     public static Stage getStage() {

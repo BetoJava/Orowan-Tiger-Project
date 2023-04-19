@@ -2,8 +2,8 @@ package firstproject.firstproject.view;
 
 import firstproject.firstproject.assets.Assets;
 import firstproject.firstproject.controller.H2Database;
+import firstproject.firstproject.dataClasses.ProcessedOutputData;
 import firstproject.firstproject.model.Orowan;
-import firstproject.firstproject.model.ProcessedOutputData;
 import firstproject.firstproject.model.Stand;
 import firstproject.firstproject.model.Strip;
 import javafx.scene.Node;
@@ -16,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GraphView extends View {
 
@@ -59,6 +58,9 @@ public class GraphView extends View {
         customComponents(root);
     }
 
+    /**
+     * Crée et configure les combo box de la view.
+     */
     private void createComboBoxes() {
         for(Stand s : H2Database.getUserStands()) {
             standComboBox.getItems().add(s.getStandID());
@@ -75,6 +77,9 @@ public class GraphView extends View {
         return H2Database.getInstance().loadProcessedOutputData(stripID, stand);
     }
 
+    /**
+     * Ajoute les graphs de la view.
+     */
     private void addDataToGraph() {
         if(stripIDComboBox.getValue() == null) {
             return;
@@ -94,12 +99,15 @@ public class GraphView extends View {
             seriesRollSpeed.getData().get(i).getNode().setVisible(false);
             seriesSigma.getData().get(i).getNode().setVisible(false);
         }
-        Random random = new Random();
-        System.out.println();
-        computeTimeLabel.setText("Compute time : " + (random.nextInt(235 - 150 + 1) + 150) + "ms");
+
+        Orowan.computeOrowanModel(String.valueOf(stripID),stand); // Execute Orowan pour récupérer le computeTime
+
+        computeTimeLabel.setText("Compute time : " + Orowan.lastComputeTime + "ms");
     }
 
-
+    /**
+     * Crée et configure les graphs de la view.
+     */
     private void createGraph() {
         computeTimeLabel = new Label("Compute time : " + Orowan.lastComputeTime);
 
@@ -125,6 +133,9 @@ public class GraphView extends View {
         seriesSigma.getNode().setVisible(false);
     }
 
+    /**
+     * Crée et configure les boutons de la view.
+     */
     private void createButtons(VBox root) {
         menuButton = new Button("Menu");
         menuButton.setContentDisplay(ContentDisplay.LEFT);
@@ -160,6 +171,9 @@ public class GraphView extends View {
         });
     }
 
+    /**
+     * Crée la scène en y ajoutant tous les éléments à leur parent.
+     */
     private void createScene(VBox root) {
         radioButtonRow.getChildren().addAll(checkBoxRollSpeed, checkBoxFriction, checkBoxSigma);
         hBoxComboBoxes.getChildren().addAll(vBoxStandComboBox, vBoxStripIDComboBox);
@@ -173,6 +187,9 @@ public class GraphView extends View {
         root.getChildren().add(menuButton);
     }
 
+    /**
+     * Adapte les portées des axes du graphiques.
+     */
     private void reRangeYAxis(int max) {
         yAxis.setAutoRanging(false);
         yAxis.setLowerBound(0);
@@ -180,8 +197,11 @@ public class GraphView extends View {
         yAxis.forceZeroInRangeProperty();
     }
 
+    /**
+     * Applique du style aux différents conmposants.
+     */
     private void customComponents(VBox root) {
-        menuButton.setGraphic(Assets.imageMap75.get("blackHome"));
+        menuButton.setGraphic(Assets.imageMap.get("blackHome"));
         radioButtonRow.setStyle("-fx-alignment: center;" +
                 "-fx-padding: 32px;");
         menuButton.setStyle("-fx-background-radius: 50;" +
@@ -189,7 +209,7 @@ public class GraphView extends View {
                 "-fx-font-size: 16;" +
                 "-fx-padding: 0px 16px;");
 
-        titleLabel.setGraphic(Assets.imageMap75.get("blackStats"));
+        titleLabel.setGraphic(Assets.imageMap.get("blackStats"));
         titleLabel.setStyle("-fx-font-size: 30px;" +
                 "-fx-font-family: Times New Roman;");
 

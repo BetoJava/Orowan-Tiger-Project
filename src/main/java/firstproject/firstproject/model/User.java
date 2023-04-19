@@ -27,6 +27,9 @@ public class User {
         this(id, identifier, password, WORKER);
     }
 
+    /**
+     * Renvoie si l'utilisateur a au moins un stand.
+     */
     public boolean hasStand(String stand){
         for (Stand s : standList)
             if(s.getStandID() == stand)

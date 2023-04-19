@@ -1,4 +1,4 @@
-package firstproject.firstproject.model;
+package firstproject.firstproject.dataClasses;
 
 public class OrowanOutputData {
 
@@ -43,110 +43,56 @@ public class OrowanOutputData {
 
     public String getStandID(){ return stand; }
 
-    public void setStand(String stand){ this.stand = stand; }
-
     public int getCaseId() {
         return caseId;
-    }
-
-    public void setCaseId(int caseId) {
-        this.caseId = caseId;
     }
 
     public String getErrors() {
         return errors;
     }
 
-    public void setErrors(String errors) {
-        this.errors = errors;
-    }
-
     public double getOffsetYield() {
         return offsetYield;
-    }
-
-    public void setOffsetYield(double offsetYield) {
-        this.offsetYield = offsetYield;
     }
 
     public double getFriction() {
         return friction;
     }
 
-    public void setFriction(double friction) {
-        this.friction = friction;
-    }
-
     public double getRollingTorque() {
         return rollingTorque;
-    }
-
-    public void setRollingTorque(double rollingTorque) {
-        this.rollingTorque = rollingTorque;
     }
 
     public double getSigmaMoy() {
         return sigmaMoy;
     }
 
-    public void setSigmaMoy(double sigmaMoy) {
-        this.sigmaMoy = sigmaMoy;
-    }
-
     public double getSigmaIni() {
         return sigmaIni;
-    }
-
-    public void setSigmaIni(double sigmaIni) {
-        this.sigmaIni = sigmaIni;
     }
 
     public double getSigmaOut() {
         return sigmaOut;
     }
 
-    public void setSigmaOut(double sigmaOut) {
-        this.sigmaOut = sigmaOut;
-    }
-
     public double getSigmaMax() {
         return sigmaMax;
-    }
-
-    public void setSigmaMax(double sigmaMax) {
-        this.sigmaMax = sigmaMax;
     }
 
     public double getForceError() {
         return forceError;
     }
 
-    public void setForceError(double forceError) {
-        this.forceError = forceError;
-    }
-
     public double getSlipError() {
         return slipError;
-    }
-
-    public void setSlipError(double slipError) {
-        this.slipError = slipError;
     }
 
     public boolean isHasConverged() {
         return hasConverged;
     }
 
-    public void setHasConverged(boolean hasConverged) {
-        this.hasConverged = hasConverged;
-    }
-
     public int getMatID() {
         return matId;
-    }
-
-    public void setMatID(int matID) {
-        this.matId = matID;
     }
 
     public double getRollSpeed() {
