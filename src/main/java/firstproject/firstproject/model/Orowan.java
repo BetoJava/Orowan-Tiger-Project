@@ -27,7 +27,7 @@ public class Orowan {
      */
     public static ArrayList<OrowanOutputData> computeOrowanModel(String stripID, String stand) {
         String currentDirectory = System.getProperty("user.dir");
-        String fileName = currentDirectory + "/FichiersOrowan";
+        String fileName = currentDirectory + "/FichiersOrowan/";
 
         try {
             ArrayList<OrowanInputData> inputDataList = convertRawDataToInputData(getRawData(stripID, stand), stripID, stand);
